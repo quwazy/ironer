@@ -3,6 +3,7 @@ module ironer.ironer {
     requires javafx.fxml;
 
     requires org.kordamp.bootstrapfx.core;
+    requires static lombok;
 
     opens ironer.ironer to javafx.fxml;
     exports ironer;

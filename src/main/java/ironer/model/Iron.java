@@ -4,6 +4,8 @@ import lombok.Data;
 import ironer.model.enums.IronShape;
 import ironer.model.enums.IronType;
 
+import java.util.Objects;
+
 @Data
 public class Iron {
     private IronShape ironShape;//oblik gvozdja
@@ -47,5 +49,17 @@ public class Iron {
                 ", amount=" + amount +
                 ", weight=" + weight +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Iron iron = (Iron) o;
+        return Double.compare(perMeter, iron.perMeter) == 0 && Double.compare(length, iron.length) == 0 && amount == iron.amount && Double.compare(weight, iron.weight) == 0 && ironShape == iron.ironShape && ironType == iron.ironType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ironShape, ironType, perMeter, length, amount, weight);
     }
 }

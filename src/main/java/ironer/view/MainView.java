@@ -33,8 +33,15 @@ public class MainView extends Stage {
     private TextField a2TextField = new TextField();
     private TextField amountTextField = new TextField();
     private Button addButton = new Button("Dodaj");
-    /// preview
+    /// preview row
     private ListView<Iron> listView = new ListView<>();
+    /// final row
+    private Label totalG = new Label();
+    private TextField totalGTextField = new TextField();
+    private Label totalR = new Label();
+    private TextField totalRTextField = new TextField();
+    private Label totalV = new Label();
+    private TextField totalVTextField = new TextField();
 
     public MainView() {
         this.mainBox = new VBox(20);
@@ -44,7 +51,7 @@ public class MainView extends Stage {
         initAddRow();
         initPreview();
 
-        Scene scene = new Scene(mainBox, 700, 700);
+        Scene scene = new Scene(mainBox, 850, 700);
         this.setScene(scene);
     }
 
@@ -134,5 +141,19 @@ public class MainView extends Stage {
 
     private void initPreview(){
         this.mainBox.getChildren().add(listView);
+    }
+
+    private void initFinal(){
+        this.totalG.setText("Uzengije");
+        this.totalGTextField.setText("0.0");
+        this.totalR.setText("Sipke");
+        this.totalRTextField.setText("0.0");
+        this.totalV.setText("Vezano");
+        this.totalVTextField.setText("0.0");
+
+        VBox vBoxG = new VBox(20);
+        vBoxG.setAlignment(Pos.CENTER);
+        VBox vBoxR = new VBox(20);
+        VBox vBoxV = new VBox(20);
     }
 }

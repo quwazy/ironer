@@ -36,4 +36,16 @@ public class Iron {
         this.amount = amount;
         this.weight = Math.round(this.length * perMeter * this.amount * 100.0) / 100.0;
     }
+
+    @Override
+    public String toString() {
+        return "Iron{" +
+                "ironShape=" + ironShape +
+                ", ironType=" + ironType +
+                ", perMeter=" + perMeter +
+                ", length=" + length +
+                ", amount=" + amount +
+                ", weight=" + weight +
+                '}';
+    }
 }

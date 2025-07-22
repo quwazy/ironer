@@ -4,4 +4,6 @@ public enum IronShape {
     SIPKE,
     UZENGIJE,
     STUBOVI,
+    GVOZDJE_N,
+    STUBOVI_N
 }

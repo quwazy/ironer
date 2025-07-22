@@ -4,11 +4,13 @@ import ironer.model.enums.IronShape;
 import ironer.model.enums.IronType;
 import ironer.model.irons.Iron;
 import ironer.model.irons.Sipke;
+import ironer.model.irons.Uzengije;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -105,8 +107,6 @@ public class OrderView extends Stage {
         }
         this.ironTypeComboBox.setValue(IronType.R8.name());
 
-
-
         HBox hBox = new HBox(20);
         hBox.setAlignment(Pos.CENTER);
         hBox.getChildren().addAll(ironShapeComboBox, ironTypeComboBox, dynamicHBox, addButton);
@@ -114,7 +114,30 @@ public class OrderView extends Stage {
         this.mainBox.getChildren().addAll(hBox);
     }
 
-    private void initTable(){}
+    private void initTable(){
+        TableColumn drawColumn  = new TableColumn("Skica");
+        drawColumn.setMaxWidth(400);
+
+        TableColumn fiColumn  = new TableColumn("fi");
+        fiColumn.setCellValueFactory(new PropertyValueFactory<ironer.model.Iron, IronType>("ironType"));
+        TableColumn lengthColumn = new TableColumn("Duzina");
+        lengthColumn.setMaxWidth(Double.MAX_VALUE);
+        lengthColumn.setMinWidth(300);
+        lengthColumn.setCellValueFactory(new PropertyValueFactory<ironer.model.Iron, Double>("length"));
+        TableColumn amountColumn = new TableColumn("Kolicina");
+        amountColumn.setCellValueFactory(new PropertyValueFactory<ironer.model.Iron, Integer>("amount"));
+        TableColumn weightColumn = new TableColumn("Tezina(kg)");
+        weightColumn.setCellValueFactory(new PropertyValueFactory<ironer.model.Iron, Double>("weight"));
+
+        tableView.setFixedCellSize(80);
+//        tableView.getStylesheets().add(Objects.requireNonNull(getClass().getResource("src/main/resources/style.css")).toExternalForm());
+        tableView.setMaxWidth(Double.MAX_VALUE);
+        tableView.setStyle("-fx-font-size: 18px;");
+        this.tableView.setItems(ironObservableList);
+        this.tableView.getColumns().addAll(drawColumn, fiColumn, lengthColumn, amountColumn, weightColumn);
+
+        this.mainBox.getChildren().addAll(this.tableView);
+    }
 
     private void initAddSipke(){
         this.ironTypeComboBox.getItems().clear();
@@ -149,7 +172,35 @@ public class OrderView extends Stage {
         this.ironTypeComboBox.setValue("G6");
 
         this.a1TextField.setPromptText("a1 duzina (m)");
+        this.a1TextField.setMinWidth(55);
+        this.a1TextField.setMaxWidth(55);
+
         this.a2TextField.setPromptText("a2 duzina (m)");
+        this.a2TextField.setMinWidth(55);
+        this.a2TextField.setMaxWidth(55);
+
         this.amountTextField.setPromptText("kolicina (kom)");
+        this.amountTextField.setMinWidth(55);
+        this.amountTextField.setMaxWidth(55);
+
+        this.addButton.setOnAction(event -> {
+            double a1 = Double.parseDouble(a1TextField.getText());
+            double a2;
+            if (a2TextField.getText().isEmpty() || a2TextField.getText().isBlank()){
+                a2 = 0.0;
+            }else {
+                a2 = Double.parseDouble(a2TextField.getText());
+            }
+
+            Uzengije uzengije = new Uzengije(IronType.valueOf(ironTypeComboBox.getValue()), a1, a2, Integer.parseInt(this.amountTextField.getText()), false);
+            ironObservableList.add(uzengije);
+            a1TextField.clear();
+            a2TextField.clear();
+            amountTextField.clear();
+        });
+
+        addButton.setDefaultButton(true);
+        dynamicHBox.setAlignment(Pos.CENTER);
+        dynamicHBox.getChildren().addAll(a1TextField, a2TextField, amountTextField, addButton);
     }
 }

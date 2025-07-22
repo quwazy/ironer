@@ -14,6 +14,10 @@ public class Core {
     public static final double G8 = 0.395;
     public static final double G10 = 0.63;
 
+    public static double roundNumber(double number){
+        return Math.round(number * 100.0) / 100.0;
+    }
+
     public static double getWeight(IronType type) {
         return switch (type.toString()) {
             case "R6" -> R6;

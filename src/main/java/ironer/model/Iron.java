@@ -31,7 +31,7 @@ public class Iron {
         this.ironType = ironType;
         this.perMeter = Core.getWeight(IronType.valueOf(ironType.name()));
         if (torziona) {
-            this.length = 3*a1 + 2*a2 + 0.2;
+            this.length = Math.round((3*a1 + 2*a2 + 0.2) * 100.0) / 100.0;
         } else {
             this.length = 2*a1 + 2*a2 + 0.2;
         }

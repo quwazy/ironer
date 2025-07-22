@@ -29,14 +29,14 @@ public class Uzengije extends Iron{
             this.a2 = a2;
         }
         if (torziona) {
-            this.length = 3*this.a1 + 2*this.a2 + 0.2;
+            this.length = Core.roundNumber(3*this.a1 + 2*this.a2 + 0.2);
             this.torziona = true;
         } else {
-            this.length = 2*this.a1 + 2*this.a2 + 0.2;
+            this.length = Core.roundNumber(2*this.a1 + 2*this.a2 + 0.2);
             this.torziona = false;
         }
         this.amount = amount;
-        this.weight = Math.round(this.length * perMeter * this.amount * 100.0) / 100.0;
+        this.weight = Core.roundNumber(this.length * perMeter * this.amount);
     }
 
     @Override

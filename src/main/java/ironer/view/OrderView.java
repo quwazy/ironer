@@ -4,6 +4,7 @@ import ironer.model.enums.IronShape;
 import ironer.model.enums.IronType;
 import ironer.model.irons.Iron;
 import ironer.model.irons.Sipke;
+import ironer.model.irons.Stuobovi;
 import ironer.model.irons.Uzengije;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,7 +55,7 @@ public class OrderView extends Stage {
         initInfoRow();
         initAddRow();
         initTable();
-//        initFinal();
+        initFinal();
 
         Scene scene = new Scene(mainBox, 850, 700);
         this.setScene(scene);
@@ -115,19 +116,19 @@ public class OrderView extends Stage {
     }
 
     private void initTable(){
-        TableColumn drawColumn  = new TableColumn("Skica");
+        TableColumn<Void, Void> drawColumn  = new TableColumn<>("Skica");
         drawColumn.setMaxWidth(400);
 
-        TableColumn fiColumn  = new TableColumn("fi");
-        fiColumn.setCellValueFactory(new PropertyValueFactory<ironer.model.Iron, IronType>("ironType"));
-        TableColumn lengthColumn = new TableColumn("Duzina");
+        TableColumn<Iron, IronType> fiColumn  = new TableColumn<>("fi");
+        fiColumn.setCellValueFactory(new PropertyValueFactory<>("ironType"));
+        TableColumn<Iron, Double> lengthColumn = new TableColumn<>("Duzina");
         lengthColumn.setMaxWidth(Double.MAX_VALUE);
         lengthColumn.setMinWidth(300);
-        lengthColumn.setCellValueFactory(new PropertyValueFactory<ironer.model.Iron, Double>("length"));
-        TableColumn amountColumn = new TableColumn("Kolicina");
-        amountColumn.setCellValueFactory(new PropertyValueFactory<ironer.model.Iron, Integer>("amount"));
-        TableColumn weightColumn = new TableColumn("Tezina(kg)");
-        weightColumn.setCellValueFactory(new PropertyValueFactory<ironer.model.Iron, Double>("weight"));
+        lengthColumn.setCellValueFactory(new PropertyValueFactory<>("length"));
+        TableColumn<Iron, Integer> amountColumn = new TableColumn<Iron, Integer>("Kolicina");
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        TableColumn<Iron, Double> weightColumn = new TableColumn<>("Tezina(kg)");
+        weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
 
         tableView.setFixedCellSize(80);
 //        tableView.getStylesheets().add(Objects.requireNonNull(getClass().getResource("src/main/resources/style.css")).toExternalForm());
@@ -137,6 +138,56 @@ public class OrderView extends Stage {
         this.tableView.getColumns().addAll(drawColumn, fiColumn, lengthColumn, amountColumn, weightColumn);
 
         this.mainBox.getChildren().addAll(this.tableView);
+    }
+
+    private void initFinal(){
+        this.totalG.setText("Uzengije");
+        this.totalGTextField.setText("0.0");
+        this.totalR.setText("Sipke");
+        this.totalRTextField.setText("0.0");
+        this.totalV.setText("Vezano");
+        this.totalVTextField.setText("0.0");
+
+        VBox vBoxG = new VBox(5);
+        vBoxG.setAlignment(Pos.BOTTOM_LEFT);
+        vBoxG.getChildren().addAll(this.totalG, totalGTextField);
+
+        VBox vBoxR = new VBox(5);
+        vBoxR.setAlignment(Pos.BOTTOM_LEFT);
+        vBoxR.getChildren().addAll(this.totalR, totalRTextField);
+
+        VBox vBoxV = new VBox(5);
+        vBoxV.setAlignment(Pos.BOTTOM_LEFT);
+        vBoxV.getChildren().addAll(this.totalV, totalVTextField);
+
+        HBox totalHBox = new HBox(20, vBoxG,vBoxR, vBoxV);
+        totalHBox.setAlignment(Pos.BOTTOM_LEFT);
+        totalHBox.setMaxHeight(30);
+        this.mainBox.getChildren().add(totalHBox);
+    }
+
+    private void updateTotal(){
+        double totalG = 0.0;
+        double totalR = 0.0;
+        double totalV = 0.0;
+
+        for (Iron iron : ironObservableList) {
+            if (iron instanceof Stuobovi){
+                totalV += ((Stuobovi) iron).getWeight();
+                continue;
+            }
+            if (iron instanceof Uzengije){
+                totalG += ((Uzengije) iron).getWeight();
+                continue;
+            }
+            if (iron instanceof Sipke){
+                totalR += ((Sipke) iron).getWeight();
+            }
+        }
+
+        this.totalGTextField.setText(String.format("%.2f", totalG));
+        this.totalRTextField.setText(String.format("%.2f", totalR));
+        this.totalVTextField.setText(String.format("%.2f", totalV));
     }
 
     private void initAddSipke(){
@@ -159,6 +210,7 @@ public class OrderView extends Stage {
             ironObservableList.add(sipke);
             a1TextField.clear();
             amountTextField.clear();
+            this.updateTotal();
         });
 
         addButton.setDefaultButton(true);
@@ -168,7 +220,7 @@ public class OrderView extends Stage {
 
     private void initAddUzengije(){
         this.ironTypeComboBox.getItems().clear();
-        this.ironTypeComboBox.getItems().addAll("G6", "G8", "R8");
+        this.ironTypeComboBox.getItems().addAll("G6", "G8", "R8", "R10");
         this.ironTypeComboBox.setValue("G6");
 
         this.a1TextField.setPromptText("a1 duzina (m)");
@@ -184,12 +236,12 @@ public class OrderView extends Stage {
         this.amountTextField.setMaxWidth(55);
 
         this.addButton.setOnAction(event -> {
-            double a1 = Double.parseDouble(a1TextField.getText());
+            double a1 = Double.parseDouble(a1TextField.getText())/100;
             double a2;
             if (a2TextField.getText().isEmpty() || a2TextField.getText().isBlank()){
                 a2 = 0.0;
             }else {
-                a2 = Double.parseDouble(a2TextField.getText());
+                a2 = Double.parseDouble(a2TextField.getText())/100;
             }
 
             Uzengije uzengije = new Uzengije(IronType.valueOf(ironTypeComboBox.getValue()), a1, a2, Integer.parseInt(this.amountTextField.getText()), false);
@@ -197,6 +249,8 @@ public class OrderView extends Stage {
             a1TextField.clear();
             a2TextField.clear();
             amountTextField.clear();
+            a1TextField.requestFocus();
+            this.updateTotal();
         });
 
         addButton.setDefaultButton(true);

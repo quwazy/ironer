@@ -11,6 +11,9 @@ import lombok.Setter;
 public abstract class Iron {
     private IronShape ironShape;
     private IronType ironType;
+    private double length;
+    private double weight;
+    private int amount;
 
     public Iron() {}
 

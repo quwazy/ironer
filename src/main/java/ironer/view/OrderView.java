@@ -1,5 +1,6 @@
 package ironer.view;
 
+import ironer.controller.PrintController;
 import ironer.model.enums.IronShape;
 import ironer.model.enums.IronType;
 import ironer.model.irons.Iron;
@@ -17,8 +18,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Shape;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.time.LocalDateTime;
 
 public class OrderView extends Stage {
@@ -52,6 +55,7 @@ public class OrderView extends Stage {
     private TextField totalRTextField = new TextField();
     private Label totalV = new Label();
     private TextField totalVTextField = new TextField();
+    private Button printButton = new Button("Printaj");
 
     public OrderView(){
         this.mainBox = new VBox(20);
@@ -177,6 +181,20 @@ public class OrderView extends Stage {
         this.totalV.setText("Vezano");
         this.totalVTextField.setText("0.0");
 
+        this.printButton.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save PDF File");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+            File file = fileChooser.showSaveDialog(this);
+
+            if (file != null) {
+                PrintController printController = new PrintController();
+                printController.exportTableViewToPdf(tableView, file.getAbsolutePath(), Double.parseDouble(this.totalGTextField.getText()), Double.parseDouble(this.totalRTextField.getText()), Double.parseDouble(this.totalVTextField.getText()));
+            }
+
+        });
+
         VBox vBoxG = new VBox(5);
         vBoxG.setAlignment(Pos.BOTTOM_LEFT);
         vBoxG.getChildren().addAll(this.totalG, totalGTextField);
@@ -189,7 +207,7 @@ public class OrderView extends Stage {
         vBoxV.setAlignment(Pos.BOTTOM_LEFT);
         vBoxV.getChildren().addAll(this.totalV, totalVTextField);
 
-        HBox totalHBox = new HBox(20, vBoxG,vBoxR, vBoxV);
+        HBox totalHBox = new HBox(20, vBoxG,vBoxR, vBoxV, printButton);
         totalHBox.setAlignment(Pos.BOTTOM_LEFT);
         totalHBox.setMaxHeight(30);
         this.mainBox.getChildren().add(totalHBox);

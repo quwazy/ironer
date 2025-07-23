@@ -33,6 +33,8 @@ public class OrderView extends Stage {
     private ComboBox<String> ironTypeComboBox = new ComboBox<>();
     private HBox dynamicHBox = new HBox(10);
     private CheckBox torzionaCheckBox = new CheckBox();
+    private TextField uzengijePerMeterTextField = new TextField();
+    private TextField duzinaStubaTextField = new TextField();
     private TextField a1TextField = new TextField();
     private TextField a2TextField = new TextField();
     private TextField amountTextField = new TextField();
@@ -89,7 +91,6 @@ public class OrderView extends Stage {
         this.ironShapeComboBox.setValue(IronShape.SIPKE.name());
         initAddSipke();
 
-
         this.ironShapeComboBox.setOnAction(event -> {
             this.dynamicHBox.getChildren().clear();
             if (IronShape.SIPKE.name().equals(this.ironShapeComboBox.getValue())) {
@@ -99,7 +100,7 @@ public class OrderView extends Stage {
                 initAddUzengije();
             }
             else if (IronShape.STUBOVI.name().equals(this.ironShapeComboBox.getValue())) {
-
+                initAddStubove();
             }
         });
 
@@ -231,7 +232,7 @@ public class OrderView extends Stage {
         this.a2TextField.setMinWidth(55);
         this.a2TextField.setMaxWidth(55);
 
-        this.amountTextField.setPromptText("kolicina (kom)");
+        this.amountTextField.setPromptText("kolicina stubovi");
         this.amountTextField.setMinWidth(55);
         this.amountTextField.setMaxWidth(55);
 
@@ -244,17 +245,69 @@ public class OrderView extends Stage {
                 a2 = Double.parseDouble(a2TextField.getText())/100;
             }
 
-            Uzengije uzengije = new Uzengije(IronType.valueOf(ironTypeComboBox.getValue()), a1, a2, Integer.parseInt(this.amountTextField.getText()), false);
+            Uzengije uzengije = new Uzengije(IronType.valueOf(ironTypeComboBox.getValue()), a1, a2, Integer.parseInt(this.amountTextField.getText()), torzionaCheckBox.isSelected());
             ironObservableList.add(uzengije);
             a1TextField.clear();
             a2TextField.clear();
             amountTextField.clear();
+            torzionaCheckBox.setSelected(false);
             a1TextField.requestFocus();
             this.updateTotal();
         });
 
         addButton.setDefaultButton(true);
         dynamicHBox.setAlignment(Pos.CENTER);
-        dynamicHBox.getChildren().addAll(a1TextField, a2TextField, amountTextField, addButton);
+        dynamicHBox.getChildren().addAll(a1TextField, a2TextField, amountTextField, torzionaCheckBox, addButton);
+    }
+
+    private void initAddStubove(){
+        this.ironTypeComboBox.getItems().clear();
+        this.ironTypeComboBox.getItems().addAll( "R8", "R10", "R12", "R14", "R16");
+        this.ironTypeComboBox.setValue("R10");
+
+        this.uzengijePerMeterTextField.setPromptText("uzengije per meter");
+        this.uzengijePerMeterTextField.setMinWidth(45);
+        this.uzengijePerMeterTextField.setMaxWidth(45);
+        this.uzengijePerMeterTextField.setText("4");
+
+        this.duzinaStubaTextField.setPromptText("duzina stuba (m)");
+        this.duzinaStubaTextField.setMinWidth(55);
+        this.duzinaStubaTextField.setMaxWidth(55);
+
+        this.a1TextField.setPromptText("a1 duzina (m)");
+        this.a1TextField.setMinWidth(55);
+        this.a1TextField.setMaxWidth(55);
+
+        this.a2TextField.setPromptText("a2 duzina (m)");
+        this.a2TextField.setMinWidth(55);
+        this.a2TextField.setMaxWidth(55);
+
+        this.amountTextField.setPromptText("kolicina (kom)");
+        this.amountTextField.setMinWidth(55);
+        this.amountTextField.setMaxWidth(55);
+
+        this.addButton.setOnAction(e -> {
+            //(IronType ironType, int amount, int uzengijePerMeter, double length, double a1, double a2)
+            double a1 = Double.parseDouble(a1TextField.getText())/100;
+            double a2;
+            if (a2TextField.getText().isEmpty() || a2TextField.getText().isBlank()){
+                a2 = 0.0;
+            }else {
+                a2 = Double.parseDouble(a2TextField.getText())/100;
+            }
+
+            Stuobovi stuobovi = new Stuobovi(IronType.valueOf(ironTypeComboBox.getValue()), Integer.parseInt(amountTextField.getText()), Integer.parseInt(uzengijePerMeterTextField.getText()), Double.parseDouble(duzinaStubaTextField.getText()), a1, a2);
+            ironObservableList.add(stuobovi);
+
+            duzinaStubaTextField.clear();
+            a1TextField.clear();
+            a2TextField.clear();
+            amountTextField.clear();
+            this.updateTotal();
+        });
+
+        addButton.setDefaultButton(true);
+        dynamicHBox.setAlignment(Pos.CENTER);
+        dynamicHBox.getChildren().addAll(uzengijePerMeterTextField, amountTextField, duzinaStubaTextField, a1TextField, a2TextField, addButton);
     }
 }

@@ -1,6 +1,11 @@
 package ironer.model.irons;
 
+import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ironer.model.enums.IronShape;
@@ -28,7 +33,24 @@ public class Stuobovi extends Iron{
     }
 
     @Override
-    public Shape getDraw() {
-        return null;
+    public Group getDraw() {
+        Group group = new Group();
+
+        // Create the line
+        Line line = new Line(0, 0, 120, 0);
+        line.setStrokeWidth(3);
+        line.setStroke(Color.BLACK);
+
+        // Create text for length
+        Text lengthText = new Text(String.format("%.2f", length));
+        lengthText.setFont(Font.font(12));
+        // Position text above the middle of the line
+        lengthText.setX(40);  // 100/2 - approximate text width/2
+        lengthText.setY(-5);  // Position above the line
+
+        // Add both elements to the group
+        group.getChildren().addAll(line, lengthText);
+
+        return group;
     }
 }

@@ -9,6 +9,7 @@ import ironer.model.irons.Uzengije;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -131,10 +132,10 @@ public class OrderView extends Stage {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    Iron iron = (Iron) getTableView().getItems().get(getIndex());
+                    Iron iron = getTableView().getItems().get(getIndex());
                     if (iron != null) {
-                        Shape shape = iron.getDraw();
-                        StackPane pane = new StackPane(shape);
+                        Group drawing = iron.getDraw();
+                        StackPane pane = new StackPane(drawing);
                         pane.setAlignment(Pos.CENTER);
                         setGraphic(pane);
                     } else {
@@ -144,9 +145,11 @@ public class OrderView extends Stage {
             }
         });
 
-
         TableColumn<Iron, IronType> fiColumn  = new TableColumn<>("fi");
         fiColumn.setCellValueFactory(new PropertyValueFactory<>("ironType"));
+        fiColumn.setMinWidth(42);
+        fiColumn.setMaxWidth(42);
+
         TableColumn<Iron, Double> lengthColumn = new TableColumn<>("Duzina");
         lengthColumn.setMaxWidth(Double.MAX_VALUE);
         lengthColumn.setMinWidth(300);

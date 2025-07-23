@@ -1,11 +1,7 @@
 package ironer.model.irons;
 
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.*;
 import javafx.scene.Group;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.ArcTo;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
@@ -47,62 +43,134 @@ public class Uzengije extends Iron{
         this.weight = Core.roundNumber(this.length * perMeter * this.amount);
     }
 
+//    @Override
+//    public Group getDraw() {
+//        Group group = new Group();
+//
+//        // Create the square with rounded corners
+//        Path path = new Path();
+//        path.setStroke(Color.BLACK);
+//        path.setStrokeWidth(2);
+//        path.setFill(null);
+//
+//        // Size and corner calculations
+//        double size = 50;
+//        double cornerSize = 8;
+//
+//        // Draw the square with rounded corners
+//        // Starting point (top-left after corner)
+//        path.getElements().addAll(
+//                // Move to start position
+//                new MoveTo(cornerSize, 0),
+//                // Top edge
+//                new LineTo(size - cornerSize, 0),
+//                // Top-right corner
+//                new ArcTo(cornerSize, cornerSize, 0, size, cornerSize, false, true),
+//                // Right edge
+//                new LineTo(size, size - cornerSize),
+//                // Bottom-right corner
+//                new ArcTo(cornerSize, cornerSize, 0, size - cornerSize, size, false, true),
+//                // Bottom edge
+//                new LineTo(cornerSize, size),
+//                // Bottom-left corner
+//                new ArcTo(cornerSize, cornerSize, 0, 0, size - cornerSize, false, true),
+//                // Left edge
+//                new LineTo(0, cornerSize),
+//                // Top-left corner
+//                new ArcTo(cornerSize, cornerSize, 0, cornerSize, 0, false, true)
+//        );
+//
+//        // Add text for a1 (left side)
+//        Text a1Text = new Text(String.format("%.2f", a1*100));
+//        a1Text.setFont(Font.font(12));
+//        a1Text.setRotate(-90);
+//        a1Text.setX(-23);
+//        a1Text.setY(size/2 + 5);
+//
+//        // Add text for a2 (bottom)
+//        Text a2Text = new Text(String.format("%.2f", a2*100));
+//        a2Text.setFont(Font.font(12));
+//        a2Text.setX(size/2 - 15);
+//        a2Text.setY(size + 12);
+//
+//        // Add all elements to the group
+//        group.getChildren().addAll(path, a1Text, a2Text);
+//
+//        // Center the group
+//        group.setTranslateX(-size/2);
+//        group.setTranslateY(-size/2 + 25);
+//
+//        return group;
+//    }
 
     @Override
-    public Shape getDraw() {
-        // Create the path (which is a Shape)
+    public Group getDraw() {
+        Group group = new Group();
+
+        // Create the square with rounded corners
         Path path = new Path();
         path.setStroke(Color.BLACK);
-        path.setStrokeWidth(3);
+        path.setStrokeWidth(2);
         path.setFill(null);
 
         // Size and corner calculations
-        double size = 45;
-        double cornerSize = 10;
+        double size = 50;
+        double cornerSize = 8;
 
-        // Starting point (top-left after corner)
+        // Draw the square with rounded corners
         path.getElements().addAll(
-                // Move to start position
                 new MoveTo(cornerSize, 0),
-                // Top edge
                 new LineTo(size - cornerSize, 0),
-                // Top-right corner
                 new ArcTo(cornerSize, cornerSize, 0, size, cornerSize, false, true),
-                // Right edge
                 new LineTo(size, size - cornerSize),
-                // Bottom-right corner
                 new ArcTo(cornerSize, cornerSize, 0, size - cornerSize, size, false, true),
-                // Bottom edge
                 new LineTo(cornerSize, size),
-                // Bottom-left corner
                 new ArcTo(cornerSize, cornerSize, 0, 0, size - cornerSize, false, true),
-                // Left edge
                 new LineTo(0, cornerSize),
-                // Top-left corner
                 new ArcTo(cornerSize, cornerSize, 0, cornerSize, 0, false, true)
         );
 
-        // Add the measurements as part of the path
-        // Left side measurement (a1)
-        path.getElements().addAll(
-                new MoveTo(-10, size/2),
-                new LineTo(-5, size/2),
-                new LineTo(-5, size/2 + 20),
-                new LineTo(-10, size/2 + 20)
-        );
+        // Add diagonal lines from top-right to center
+        // First diagonal line
+        Line diagonalLine1 = new Line();
+        diagonalLine1.setStartX(size);  // Top-right X
+        diagonalLine1.setStartY(cornerSize);  // Top-right Y (accounting for corner)
+        diagonalLine1.setEndX(size - (size - (size/2 + 7))/2);  // Halfway to center X
+        diagonalLine1.setEndY(cornerSize + (size/2 + 10 - cornerSize)/2);  // Halfway to center Y
+        diagonalLine1.setStroke(Color.BLACK);
+        diagonalLine1.setStrokeWidth(1.5);
 
-        // Bottom measurement (a2)
-        path.getElements().addAll(
-                new MoveTo(size/2, size + 10),
-                new LineTo(size/2, size + 5),
-                new LineTo(size/2 + 20, size + 5),
-                new LineTo(size/2 + 20, size + 10)
-        );
+        // Second diagonal line parallel to the first but above it
+        Line diagonalLine2 = new Line();
+        // Calculate the offset (5 pixels above)
+        double offsetY = -5;
+        diagonalLine2.setStartX(size);  // Same X start as line 1
+        diagonalLine2.setStartY(cornerSize + offsetY);  // Start 5px above line 1
+        diagonalLine2.setEndX(size - (size - (size/2 + 7))/2);  // Same X end as line 1
+        diagonalLine2.setEndY(cornerSize + (size/2 + 10 - cornerSize)/2 + offsetY);  // End 5px above line 1
+        diagonalLine2.setStroke(Color.BLACK);
+        diagonalLine2.setStrokeWidth(1.5);
 
-        // Center the shape
-        path.setTranslateX(-size/2);
-        path.setTranslateY(-size/2 + 25);
+        // Add text for a1 (left side)
+        Text a1Text = new Text(String.format("%.0f", a1*100));
+        a1Text.setFont(Font.font(12));
+        a1Text.setRotate(-90);
+        a1Text.setX(-18);
+        a1Text.setY(size/2 + 5);
 
-        return path;
+        // Add text for a2 (bottom)
+        Text a2Text = new Text(String.format("%.0f", a2*100));
+        a2Text.setFont(Font.font(12));
+        a2Text.setX(size/2 - 5);
+        a2Text.setY(size + 12);
+
+        // Add all elements to the group
+        group.getChildren().addAll(path, diagonalLine1, diagonalLine2, a1Text, a2Text);
+
+        // Center the group
+        group.setTranslateX(-size/2);
+        group.setTranslateY(-size/2 + 25);
+
+        return group;
     }
 }

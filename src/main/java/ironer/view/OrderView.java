@@ -13,7 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
@@ -40,7 +42,7 @@ public class OrderView extends Stage {
     private TextField amountTextField = new TextField();
     private Button addButton = new Button("Dodaj");
     /// preview row
-    private TableView tableView = new TableView<>();
+    private TableView<Iron> tableView = new TableView<>();
     private Button removeButton = new Button("Ukloni");
     /// final row
     private Label totalG = new Label();
@@ -117,8 +119,31 @@ public class OrderView extends Stage {
     }
 
     private void initTable(){
-        TableColumn<Void, Void> drawColumn  = new TableColumn<>("Skica");
+        TableColumn<Iron, Void> drawColumn = new TableColumn<>("Skica");
+        drawColumn.setMinWidth(250);
         drawColumn.setMaxWidth(400);
+
+        drawColumn.setCellFactory(col -> new TableCell<Iron, Void>() {
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Iron iron = (Iron) getTableView().getItems().get(getIndex());
+                    if (iron != null) {
+                        Shape shape = iron.getDraw();
+                        StackPane pane = new StackPane(shape);
+                        pane.setAlignment(Pos.CENTER);
+                        setGraphic(pane);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            }
+        });
+
 
         TableColumn<Iron, IronType> fiColumn  = new TableColumn<>("fi");
         fiColumn.setCellValueFactory(new PropertyValueFactory<>("ironType"));
@@ -287,7 +312,6 @@ public class OrderView extends Stage {
         this.amountTextField.setMaxWidth(55);
 
         this.addButton.setOnAction(e -> {
-            //(IronType ironType, int amount, int uzengijePerMeter, double length, double a1, double a2)
             double a1 = Double.parseDouble(a1TextField.getText())/100;
             double a2;
             if (a2TextField.getText().isEmpty() || a2TextField.getText().isBlank()){

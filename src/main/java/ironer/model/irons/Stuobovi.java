@@ -1,10 +1,10 @@
 package ironer.model.irons;
 
+import javafx.scene.shape.Shape;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ironer.model.enums.IronShape;
 import ironer.model.enums.IronType;
-import javafx.scene.control.TableColumn;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -20,6 +20,7 @@ public class Stuobovi extends Iron{
         super(IronShape.STUBOVI, ironType);
         this.amount = amount;
         this.uzengijePerMeter = uzengijePerMeter;
+        this.length = length;
         this.sipke = new Sipke(ironType, length, this.amount * 4);
         this.uzengije = new Uzengije(IronType.G6, a1, a2,this.amount * ((int)
                 Math.ceil(this.uzengijePerMeter * length)),false);
@@ -27,7 +28,7 @@ public class Stuobovi extends Iron{
     }
 
     @Override
-    public TableColumn<Void, Void> getDraw() {
+    public Shape getDraw() {
         return null;
     }
 }

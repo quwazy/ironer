@@ -2,7 +2,7 @@ package ironer.model.irons;
 
 import ironer.model.enums.IronShape;
 import ironer.model.enums.IronType;
-import javafx.scene.control.TableColumn;
+import javafx.scene.shape.Shape;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,5 +19,5 @@ public abstract class Iron {
         this.ironType = ironType;
     }
 
-    public abstract TableColumn<Void, Void> getDraw();
+    public abstract Shape getDraw();
 }

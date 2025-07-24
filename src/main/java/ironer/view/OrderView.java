@@ -155,17 +155,17 @@ public class OrderView extends Stage {
         fiColumn.setMinWidth(45);
         fiColumn.setMaxWidth(45);
 
-        TableColumn<Iron, Double> lengthColumn = new TableColumn<>("Duzina");
+        TableColumn<Iron, Double> lengthColumn = new TableColumn<>("Duzina (m) ");
         lengthColumn.setCellValueFactory(new PropertyValueFactory<>("length"));
         lengthColumn.setMinWidth(200);
         lengthColumn.setMaxWidth(400);
 
-        TableColumn<Iron, Integer> amountColumn = new TableColumn<>("Kolicina");
+        TableColumn<Iron, Integer> amountColumn = new TableColumn<>("Kolicina (kom) ");
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         lengthColumn.setMinWidth(200);
         lengthColumn.setMaxWidth(400);
 
-        TableColumn<Iron, Double> weightColumn = new TableColumn<>("Tezina(kg)");
+        TableColumn<Iron, Double> weightColumn = new TableColumn<>("Tezina(kg) ");
         weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
         lengthColumn.setMinWidth(200);
         lengthColumn.setMaxWidth(400);
@@ -253,7 +253,7 @@ public class OrderView extends Stage {
     private void initAddSipke(){
         this.ironTypeComboBox.getItems().clear();
         this.ironTypeComboBox.getItems().addAll("R6", "R8", "R10", "R12", "R14", "R16");
-        this.ironTypeComboBox.setValue("R6");
+        this.ironTypeComboBox.setValue("R8");
 
         this.a1TextField.setPromptText("duzina (m)");
         this.a1TextField.setMinWidth(55);

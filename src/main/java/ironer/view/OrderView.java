@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Shape;
@@ -151,24 +152,36 @@ public class OrderView extends Stage {
 
         TableColumn<Iron, IronType> fiColumn  = new TableColumn<>("fi");
         fiColumn.setCellValueFactory(new PropertyValueFactory<>("ironType"));
-        fiColumn.setMinWidth(42);
-        fiColumn.setMaxWidth(42);
+        fiColumn.setMinWidth(45);
+        fiColumn.setMaxWidth(45);
 
         TableColumn<Iron, Double> lengthColumn = new TableColumn<>("Duzina");
-        lengthColumn.setMaxWidth(Double.MAX_VALUE);
-        lengthColumn.setMinWidth(300);
         lengthColumn.setCellValueFactory(new PropertyValueFactory<>("length"));
-        TableColumn<Iron, Integer> amountColumn = new TableColumn<Iron, Integer>("Kolicina");
+        lengthColumn.setMinWidth(200);
+        lengthColumn.setMaxWidth(400);
+
+        TableColumn<Iron, Integer> amountColumn = new TableColumn<>("Kolicina");
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        lengthColumn.setMinWidth(200);
+        lengthColumn.setMaxWidth(400);
+
         TableColumn<Iron, Double> weightColumn = new TableColumn<>("Tezina(kg)");
         weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
+        lengthColumn.setMinWidth(200);
+        lengthColumn.setMaxWidth(400);
+        weightColumn.setStyle("-fx-alignment: CENTER;");
 
-        tableView.setFixedCellSize(80);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        tableView.setFixedCellSize(70);
 //        tableView.getStylesheets().add(Objects.requireNonNull(getClass().getResource("src/main/resources/style.css")).toExternalForm());
         tableView.setMaxWidth(Double.MAX_VALUE);
         tableView.setStyle("-fx-font-size: 18px;");
         this.tableView.setItems(ironObservableList);
         this.tableView.getColumns().addAll(drawColumn, fiColumn, lengthColumn, amountColumn, weightColumn);
+        VBox.setVgrow(tableView, Priority.ALWAYS);
+        tableView.setMaxWidth(Double.MAX_VALUE);
+        tableView.setMaxHeight(Double.MAX_VALUE);
 
         this.mainBox.getChildren().addAll(this.tableView);
     }
@@ -196,7 +209,7 @@ public class OrderView extends Stage {
         });
 
         VBox vBoxG = new VBox(5);
-        vBoxG.setAlignment(Pos.BOTTOM_LEFT);
+        vBoxG.setAlignment(Pos.CENTER_LEFT);
         vBoxG.getChildren().addAll(this.totalG, totalGTextField);
 
         VBox vBoxR = new VBox(5);
@@ -207,8 +220,8 @@ public class OrderView extends Stage {
         vBoxV.setAlignment(Pos.BOTTOM_LEFT);
         vBoxV.getChildren().addAll(this.totalV, totalVTextField);
 
-        HBox totalHBox = new HBox(20, vBoxG,vBoxR, vBoxV, printButton);
-        totalHBox.setAlignment(Pos.BOTTOM_LEFT);
+        HBox totalHBox = new HBox(10, vBoxG,vBoxR, vBoxV, printButton);
+        totalHBox.setAlignment(Pos.CENTER_LEFT);
         totalHBox.setMaxHeight(30);
         this.mainBox.getChildren().add(totalHBox);
     }
@@ -257,6 +270,7 @@ public class OrderView extends Stage {
             ironObservableList.add(sipke);
             a1TextField.clear();
             amountTextField.clear();
+            a1TextField.requestFocus();
             this.updateTotal();
         });
 

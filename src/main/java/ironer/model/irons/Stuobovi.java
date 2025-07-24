@@ -59,17 +59,11 @@ public class Stuobovi extends Iron{
         );
 
         // Add circles to each corner
-        Circle topLeftCircle = new Circle(cornerSize, cornerSize, 4);
-//        topLeftCircle.setFill(Color.BLACK);
-
-        Circle topRightCircle = new Circle(size - cornerSize, cornerSize, 4);
-//        topRightCircle.setFill(Color.BLACK);
-
-        Circle bottomLeftCircle = new Circle(cornerSize, size - cornerSize, 4);
-//        bottomLeftCircle.setFill(Color.BLACK);
-
-        Circle bottomRightCircle = new Circle(size - cornerSize, size - cornerSize, 4);
-//        bottomRightCircle.setFill(Color.BLACK);
+        int circle = 4;
+        Circle topLeftCircle = new Circle(cornerSize, cornerSize, circle);
+        Circle topRightCircle = new Circle(size - cornerSize, cornerSize, circle);
+        Circle bottomLeftCircle = new Circle(cornerSize, size - cornerSize, circle);
+        Circle bottomRightCircle = new Circle(size - cornerSize, size - cornerSize, circle);
 
         // Add text for a1 (left side)
         Text a1Text = new Text(String.format("%.0f", this.uzengije.getA1() * 100));
@@ -84,26 +78,26 @@ public class Stuobovi extends Iron{
         a2Text.setX(size / 2 - 7);
         a2Text.setY(size + 12);
 
-        Text sipkeText = new Text("ukupno sipki: " + this.sipke.getAmount());
-        sipkeText.setFont(Font.font(12));
+        Text sipkeText = new Text("sipki: " + this.sipke.getAmount() + "kom");
+        sipkeText.setFont(Font.font(14));
         sipkeText.setX(size + 20);
-        sipkeText.setY(size - 33);
+        sipkeText.setY(size - 38);
 
-        Text uzengijeText = new Text("ukupno uzengija: " + this.uzengije.getAmount());
-        uzengijeText.setFont(Font.font(12));
+        Text uzengijeText = new Text("uzengija: " + this.uzengije.getAmount() + "kom");
+        uzengijeText.setFont(Font.font(14));
         uzengijeText.setX(size + 20);
-        uzengijeText.setY(size - 20);
+        uzengijeText.setY(size - 22);
 
-        Text uzengijePerMeterText = new Text("uzengije po metru: " + this.uzengijePerMeter);
-        uzengijePerMeterText.setFont(Font.font(12));
+        Text uzengijePerMeterText = new Text("u metar: " + this.uzengijePerMeter + "kom");
+        uzengijePerMeterText.setFont(Font.font(14));
         uzengijePerMeterText.setX(size + 20);
-        uzengijePerMeterText.setY(size - 7);
+        uzengijePerMeterText.setY(size - 5);
 
         // Add all elements to the group
         group.getChildren().addAll(path, topLeftCircle, topRightCircle, bottomLeftCircle, bottomRightCircle, a1Text, a2Text, sipkeText, uzengijeText, uzengijePerMeterText);
 
         // Center the group
-        group.setTranslateX(-size / 2);
+        group.setTranslateX(-size / 2 + 20);
         group.setTranslateY(-size / 2 + 25);
 
         return group;

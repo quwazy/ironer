@@ -61,9 +61,8 @@ public class PrintController {
                 }
             }
 
-// Apply column widths to the table
+            // Apply column widths to the table
             pdfTable.setWidths(columnWidths);
-
 
             // Add rows with data (drawings, text, etc.)
             for (Iron iron : tableView.getItems()) {
@@ -104,15 +103,42 @@ public class PrintController {
                 }
             }
 
-
             document.add(pdfTable);
 
-            // Add footer with totals
-            document.add(new Paragraph(" ")); // Add some space
-            document.add(new Paragraph("Total Uzengije: " + totalG + " kg"));
-            document.add(new Paragraph("Total Sipke: " + totalR + " kg"));
-            document.add(new Paragraph("Total Vezano: " + totalV + " kg"));
+            //Total view
+            PdfPTable pdfTotalTable = new PdfPTable(3);
+            pdfTotalTable.setWidthPercentage(100);
+            pdfTotalTable.setWidths(new float[]{2.0f, 2.0f, 2.0f});
 
+            PdfPCell headerUzengije = new PdfPCell(new Phrase("Total Uzengije"));
+            headerUzengije.setHorizontalAlignment(Element.ALIGN_LEFT);
+            headerUzengije.setBackgroundColor(BaseColor.LIGHT_GRAY);
+
+            PdfPCell headerSipke = new PdfPCell(new Phrase("Total Sipke"));
+            headerSipke.setHorizontalAlignment(Element.ALIGN_LEFT);
+            headerSipke.setBackgroundColor(BaseColor.LIGHT_GRAY);
+
+            PdfPCell headerVezano = new PdfPCell(new Phrase("Total Vezano"));
+            headerVezano.setHorizontalAlignment(Element.ALIGN_LEFT);
+            headerVezano.setBackgroundColor(BaseColor.LIGHT_GRAY);
+
+            pdfTotalTable.addCell(headerUzengije);
+            pdfTotalTable.addCell(headerSipke);
+            pdfTotalTable.addCell(headerVezano);
+
+            PdfPCell uzengijeCell = new PdfPCell(new Phrase(String.format("%.2f", totalG) + " kg"));
+            uzengijeCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            pdfTotalTable.addCell(uzengijeCell);
+
+            PdfPCell sipkeCell = new PdfPCell(new Phrase(String.format("%.2f", totalR) + " kg"));
+            sipkeCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            pdfTotalTable.addCell(sipkeCell);
+
+            PdfPCell vezanoCell = new PdfPCell(new Phrase(String.format("%.2f", totalV) + " kg"));
+            vezanoCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            pdfTotalTable.addCell(vezanoCell);
+
+            document.add(pdfTotalTable);
             document.close();
 
             // Show success message

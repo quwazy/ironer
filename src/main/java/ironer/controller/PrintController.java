@@ -46,40 +46,64 @@ public class PrintController {
                 pdfTable.addCell(header);
             }
 
-            // Add rows with drawings
-            for (Iron iron : tableView.getItems()) {
-                // Add drawing
-                PdfPCell drawingCell = new PdfPCell();
-                if (iron.getDraw() != null) {
-                    // Create image from JavaFX drawing
-                    Group drawing = iron.getDraw();
-                    // Need to place in scene to render correctly
-                    Scene scene = new Scene(new StackPane(drawing), 100, 120);
-                    WritableImage image = new WritableImage(100, 120);
-                    scene.snapshot(image);
+            // Define relative widths for columns
+            float[] columnWidths = new float[tableView.getColumns().size()];
+            for (int i = 0; i < tableView.getColumns().size(); i++) {
+                TableColumn<Iron, ?> column = tableView.getColumns().get(i);
 
-                    // Convert WritableImage to BufferedImage
-                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-
-                    // Convert BufferedImage to iText Image
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ImageIO.write(bufferedImage, "png", baos);
-                    Image pdfImage = Image.getInstance(baos.toByteArray());
-                    pdfImage.scaleToFit(80, 60);
-
-                    drawingCell.addElement(pdfImage);
-                    drawingCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    drawingCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                    drawingCell.setPadding(5);
+                // Assign widths based on column title or type
+                if ("Skica".equals(column.getText())) {
+                    columnWidths[i] = 4.0f; // Wider for the "Skica" column
+                } else if ("fi".equals(column.getText())) {
+                    columnWidths[i] = 1.0f; // Narrower for the "fi" column
+                } else {
+                    columnWidths[i] = 2.0f; // Default for other columns
                 }
-                pdfTable.addCell(drawingCell);
-
-                // Add other fields
-                pdfTable.addCell(new Phrase(iron.getIronType().toString()));
-                pdfTable.addCell(new Phrase(String.format("%.2f", iron.getLength())));
-                pdfTable.addCell(new Phrase(String.valueOf(iron.getAmount())));
-                pdfTable.addCell(new Phrase(String.format("%.2f", iron.getWeight())));
             }
+
+// Apply column widths to the table
+            pdfTable.setWidths(columnWidths);
+
+
+            // Add rows with data (drawings, text, etc.)
+            for (Iron iron : tableView.getItems()) {
+                for (TableColumn<Iron, ?> column : tableView.getColumns()) {
+                    if ("Skica".equals(column.getText())) {
+                        // Add drawing for "Skica" column
+                        PdfPCell drawingCell = new PdfPCell();
+                        if (iron.getDraw() != null) {
+                            // Create image from JavaFX drawing
+                            Group drawing = iron.getDraw();
+                            Scene scene = new Scene(new StackPane(drawing), 250, 100);
+                            WritableImage image = new WritableImage(250, 100);
+                            scene.snapshot(image);
+
+                            // Convert WritableImage to BufferedImage
+                            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+
+                            // Convert BufferedImage to iText Image
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            ImageIO.write(bufferedImage, "png", baos);
+                            Image pdfImage = Image.getInstance(baos.toByteArray());
+                            pdfImage.scaleToFit(230, 60);
+                            pdfImage.setBackgroundColor(BaseColor.WHITE);
+
+                            drawingCell.addElement(pdfImage);
+                            drawingCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                            drawingCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                            drawingCell.setPadding(5);
+                        }
+                        pdfTable.addCell(drawingCell);
+                    } else {
+                        // For other columns, add textual or numeric content
+                        Object cellValue = column.getCellData(iron);
+                        PdfPCell cell = new PdfPCell(new Phrase(cellValue != null ? cellValue.toString() : ""));
+                        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        pdfTable.addCell(cell);
+                    }
+                }
+            }
+
 
             document.add(pdfTable);
 

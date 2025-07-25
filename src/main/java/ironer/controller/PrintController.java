@@ -21,7 +21,7 @@ import java.io.FileOutputStream;
 
 public class PrintController {
 
-    public void exportTableViewToPdf(TableView<Iron> tableView, String filePath, double totalG, double totalR, double totalV) {
+    public void exportTableViewToPdf(TableView<Iron> tableView, String filePath, double totalG, double totalR, double totalV, String orderIdentifier, String orderData, String orderer) {
         try {
             Document document = new Document(PageSize.A4);
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
@@ -29,7 +29,7 @@ public class PrintController {
 
             // Add title
             Font titleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
-            Paragraph title = new Paragraph("Iron Order Details", titleFont);
+            Paragraph title = new Paragraph("Radni nalog: " + orderIdentifier, titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
             document.add(new Paragraph(" ")); // Add some space

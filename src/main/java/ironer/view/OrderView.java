@@ -1,5 +1,6 @@
 package ironer.view;
 
+import ironer.controller.ClearListAction;
 import ironer.controller.PrintController;
 import ironer.model.enums.IronShape;
 import ironer.model.enums.IronType;
@@ -203,9 +204,15 @@ public class OrderView extends Stage {
 
             if (file != null) {
                 PrintController printController = new PrintController();
-                printController.exportTableViewToPdf(tableView, file.getAbsolutePath(), Double.parseDouble(this.totalGTextField.getText()), Double.parseDouble(this.totalRTextField.getText()), Double.parseDouble(this.totalVTextField.getText()));
+                printController.exportTableViewToPdf(tableView, file.getAbsolutePath(), Double.parseDouble(this.totalGTextField.getText()), Double.parseDouble(this.totalRTextField.getText()), Double.parseDouble(this.totalVTextField.getText()), this.identifierTextField.getText(), this.dateTextField.getText(), this.ordererTextField.getText());
             }
 
+        });
+
+        this.removeButton.setOnAction(event -> {
+            ClearListAction clearListAction = new ClearListAction();
+            clearListAction.clearList(ironObservableList);
+            updateTotal();
         });
 
         VBox vBoxG = new VBox(5);
@@ -220,7 +227,7 @@ public class OrderView extends Stage {
         vBoxV.setAlignment(Pos.BOTTOM_LEFT);
         vBoxV.getChildren().addAll(this.totalV, totalVTextField);
 
-        HBox totalHBox = new HBox(10, vBoxG,vBoxR, vBoxV, printButton);
+        HBox totalHBox = new HBox(10, vBoxG,vBoxR, vBoxV, printButton, removeButton);
         totalHBox.setAlignment(Pos.CENTER_LEFT);
         totalHBox.setMaxHeight(30);
         this.mainBox.getChildren().add(totalHBox);

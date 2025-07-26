@@ -27,13 +27,40 @@ public class PrintController {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
             document.open();
 
-            // Add title
+            // Add titlek
             Font titleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
-            Paragraph title = new Paragraph("Radni nalog: " + orderIdentifier, titleFont);
+            Paragraph title = new Paragraph("CTP Ristic D.O.O.", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
             document.add(new Paragraph(" ")); // Add some space
+            // Info table
+            PdfPTable infoTable = new PdfPTable(4);
+            infoTable.setWidthPercentage(100);
+            infoTable.setWidths(new float[]{2.0f, 2.0f, 2.0f, 2.0f});
+            infoTable.setSpacingBefore(10);
 
+            PdfPCell orderIdentifierCell = new PdfPCell(new Phrase("Oznaka: " + orderIdentifier));
+            orderIdentifierCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            orderIdentifierCell.setBorder(0);
+
+            PdfPCell ordererCell = new PdfPCell(new Phrase("Narucilac: " + orderer));
+            ordererCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            ordererCell.setBorder(0);
+
+            PdfPCell dateCell = new PdfPCell(new Phrase("Datum: " + orderData));
+            dateCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            dateCell.setBorder(0);
+
+            PdfPCell noteCell = new PdfPCell(new Phrase("Napomena: "));
+            noteCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            noteCell.setBorder(0);
+
+            infoTable.addCell(orderIdentifierCell);
+            infoTable.addCell(ordererCell);
+            infoTable.addCell(dateCell);
+            infoTable.addCell(noteCell);
+            document.add(infoTable);
+            document.add(new Paragraph(" "));
             // Create PDF table with all columns (including drawing)
             PdfPTable pdfTable = new PdfPTable(tableView.getColumns().size());
             pdfTable.setWidthPercentage(100);
@@ -91,6 +118,7 @@ public class PrintController {
                             drawingCell.setHorizontalAlignment(Element.ALIGN_CENTER);
                             drawingCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                             drawingCell.setPadding(5);
+//                            drawingCell.setFixedHeight(55f);
                         }
                         pdfTable.addCell(drawingCell);
                     } else {

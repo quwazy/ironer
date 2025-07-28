@@ -6,7 +6,7 @@ import ironer.model.enums.IronShape;
 import ironer.model.enums.IronType;
 import ironer.model.irons.Iron;
 import ironer.model.irons.Sipke;
-import ironer.model.irons.Stuobovi;
+import ironer.model.irons.Stubovi;
 import ironer.model.irons.Uzengije;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,10 +19,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Shape;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.time.LocalDateTime;
 
@@ -239,8 +237,8 @@ public class OrderView extends Stage {
         double totalV = 0.0;
 
         for (Iron iron : ironObservableList) {
-            if (iron instanceof Stuobovi){
-                totalV += ((Stuobovi) iron).getWeight();
+            if (iron instanceof Stubovi){
+                totalV += ((Stubovi) iron).getWeight();
                 continue;
             }
             if (iron instanceof Uzengije){
@@ -362,8 +360,8 @@ public class OrderView extends Stage {
                 a2 = Double.parseDouble(a2TextField.getText())/100;
             }
 
-            Stuobovi stuobovi = new Stuobovi(IronType.valueOf(ironTypeComboBox.getValue()), Integer.parseInt(amountTextField.getText()), Integer.parseInt(uzengijePerMeterTextField.getText()), Double.parseDouble(duzinaStubaTextField.getText()), a1, a2);
-            ironObservableList.add(stuobovi);
+            Stubovi stubovi = new Stubovi(IronType.valueOf(ironTypeComboBox.getValue()), Integer.parseInt(amountTextField.getText()), Integer.parseInt(uzengijePerMeterTextField.getText()), Double.parseDouble(duzinaStubaTextField.getText()), a1, a2);
+            ironObservableList.add(stubovi);
 
             duzinaStubaTextField.clear();
             a1TextField.clear();

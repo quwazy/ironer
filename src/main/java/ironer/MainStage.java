@@ -7,12 +7,9 @@ import javafx.stage.Stage;
 public class MainStage extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception {
-//        MainView mainView = new MainView();
-//        mainView.setTitle("Ironer");
-//        mainView.show();
+    public void start(Stage stage) {
         OrderView orderView = new OrderView();
-        orderView.setTitle("Ironer");
+        orderView.setTitle("Kreator radnih naloga");
         orderView.show();
     }
 

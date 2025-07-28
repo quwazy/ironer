@@ -1,5 +1,6 @@
 package ironer.model.irons;
 
+import ironer.model.Core;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -12,7 +13,7 @@ import ironer.model.enums.IronType;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Stuobovi extends Iron{
+public class Stubovi extends Iron{
     private double length;      //ukupna duzina
     private int amount;             //ukupna kolicina
     private double weight;      //ukupna kilaza
@@ -20,7 +21,7 @@ public class Stuobovi extends Iron{
     private Sipke sipke;            //sipka za stubove
     private Uzengije uzengije;      //uzengija za stubove
 
-    public Stuobovi(IronType ironType, int amount, int uzengijePerMeter, double length, double a1, double a2){
+    public Stubovi(IronType ironType, int amount, int uzengijePerMeter, double length, double a1, double a2){
         super(IronShape.STUBOVI, ironType);
         this.amount = amount;
         this.uzengijePerMeter = uzengijePerMeter;
@@ -29,6 +30,17 @@ public class Stuobovi extends Iron{
         this.uzengije = new Uzengije(IronType.G6, a1, a2,this.amount * ((int)
                 Math.ceil(this.uzengijePerMeter * length)),false);
         this.weight = sipke.getWeight() + uzengije.getWeight();
+    }
+
+    public Stubovi(IronType ironTypeSipka, int amountStubova, int sipkePerStub, double length, IronType ironTypeUzengija, int uzengijePerMeter, double a1, double a2){
+        super(IronShape.STUBOVI, ironTypeSipka);
+        this.amount = amountStubova;
+        this.uzengijePerMeter = uzengijePerMeter;
+        this.length = length;
+        this.sipke = new Sipke(ironTypeSipka, length, amountStubova * sipkePerStub);
+        this.uzengije = new Uzengije(ironTypeUzengija, a1, a2,this.amount * ((int)
+                Math.ceil(this.uzengijePerMeter * length)),false);
+        this.weight = Core.getRoundNumber(sipke.getWeight() + uzengije.getWeight());
     }
 
     @Override

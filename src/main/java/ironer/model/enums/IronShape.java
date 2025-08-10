@@ -5,5 +5,4 @@ public enum IronShape {
     UZENGIJE,
     STUBOVI,
     GVOZDJE_N,
-    STUBOVI_N
 }

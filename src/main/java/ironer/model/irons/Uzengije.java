@@ -43,66 +43,6 @@ public class Uzengije extends Iron{
         this.weight = Core.getRoundNumber(this.length * perMeter * this.amount);
     }
 
-//    @Override
-//    public Group getDraw() {
-//        Group group = new Group();
-//
-//        // Create the square with rounded corners
-//        Path path = new Path();
-//        path.setStroke(Color.BLACK);
-//        path.setStrokeWidth(2);
-//        path.setFill(null);
-//
-//        // Size and corner calculations
-//        double size = 50;
-//        double cornerSize = 8;
-//
-//        // Draw the square with rounded corners
-//        // Starting point (top-left after corner)
-//        path.getElements().addAll(
-//                // Move to start position
-//                new MoveTo(cornerSize, 0),
-//                // Top edge
-//                new LineTo(size - cornerSize, 0),
-//                // Top-right corner
-//                new ArcTo(cornerSize, cornerSize, 0, size, cornerSize, false, true),
-//                // Right edge
-//                new LineTo(size, size - cornerSize),
-//                // Bottom-right corner
-//                new ArcTo(cornerSize, cornerSize, 0, size - cornerSize, size, false, true),
-//                // Bottom edge
-//                new LineTo(cornerSize, size),
-//                // Bottom-left corner
-//                new ArcTo(cornerSize, cornerSize, 0, 0, size - cornerSize, false, true),
-//                // Left edge
-//                new LineTo(0, cornerSize),
-//                // Top-left corner
-//                new ArcTo(cornerSize, cornerSize, 0, cornerSize, 0, false, true)
-//        );
-//
-//        // Add text for a1 (left side)
-//        Text a1Text = new Text(String.format("%.2f", a1*100));
-//        a1Text.setFont(Font.font(12));
-//        a1Text.setRotate(-90);
-//        a1Text.setX(-23);
-//        a1Text.setY(size/2 + 5);
-//
-//        // Add text for a2 (bottom)
-//        Text a2Text = new Text(String.format("%.2f", a2*100));
-//        a2Text.setFont(Font.font(12));
-//        a2Text.setX(size/2 - 15);
-//        a2Text.setY(size + 12);
-//
-//        // Add all elements to the group
-//        group.getChildren().addAll(path, a1Text, a2Text);
-//
-//        // Center the group
-//        group.setTranslateX(-size/2);
-//        group.setTranslateY(-size/2 + 25);
-//
-//        return group;
-//    }
-
     @Override
     public Group getDraw() {
         Group group = new Group();
@@ -130,7 +70,6 @@ public class Uzengije extends Iron{
                 new ArcTo(cornerSize, cornerSize, 0, cornerSize, 0, false, true)
         );
 
-        // Add diagonal lines from top-right to center
         // First diagonal line
         Line diagonalLine1 = new Line();
         diagonalLine1.setStartX(size);  // Top-right X
@@ -140,9 +79,8 @@ public class Uzengije extends Iron{
         diagonalLine1.setStroke(Color.BLACK);
         diagonalLine1.setStrokeWidth(1.5);
 
-        // Second diagonal line parallel to the first but above it
+        // Second diagonal line
         Line diagonalLine2 = new Line();
-        // Calculate the offset (5 pixels above)
         double offsetY = -5;
         diagonalLine2.setStartX(size);  // Same X start as line 1
         diagonalLine2.setStartY(cornerSize + offsetY);  // Start 5px above line 1
@@ -164,13 +102,9 @@ public class Uzengije extends Iron{
         a2Text.setX(size/2 - 5);
         a2Text.setY(size + 12);
 
-        // Add all elements to the group
         group.getChildren().addAll(path, diagonalLine1, diagonalLine2, a1Text, a2Text);
-
-        // Center the group
         group.setTranslateX(-size/2);
         group.setTranslateY(-size/2 + 25);
-
         return group;
     }
 }

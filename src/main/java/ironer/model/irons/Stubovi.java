@@ -14,29 +14,18 @@ import ironer.model.enums.IronType;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Stubovi extends Iron{
-    private double length;      //ukupna duzina
-    private int amount;             //ukupna kolicina
-    private double weight;      //ukupna kilaza
+    private double length;          //ukupna duzina
+    private int amount;             //ukupna kolicina stubova
+    private double weight;          //ukupna kilaza
     private int uzengijePerMeter;   //koliko uzengija ide po metru u stub
     private Sipke sipke;            //sipka za stubove
     private Uzengije uzengije;      //uzengija za stubove
 
-    public Stubovi(IronType ironType, int amount, int uzengijePerMeter, double length, double a1, double a2){
-        super(IronShape.STUBOVI, ironType);
-        this.amount = amount;
-        this.uzengijePerMeter = uzengijePerMeter;
-        this.length = length;
-        this.sipke = new Sipke(ironType, length, this.amount * 4);
-        this.uzengije = new Uzengije(IronType.G6, a1, a2,this.amount * ((int)
-                Math.ceil(this.uzengijePerMeter * length)),false);
-        this.weight = sipke.getWeight() + uzengije.getWeight();
-    }
-
     public Stubovi(IronType ironTypeSipka, int amountStubova, int sipkePerStub, double length, IronType ironTypeUzengija, int uzengijePerMeter, double a1, double a2){
         super(IronShape.STUBOVI, ironTypeSipka);
+        this.length = length;
         this.amount = amountStubova;
         this.uzengijePerMeter = uzengijePerMeter;
-        this.length = length;
         this.sipke = new Sipke(ironTypeSipka, length, amountStubova * sipkePerStub);
         this.uzengije = new Uzengije(ironTypeUzengija, a1, a2,this.amount * ((int)
                 Math.ceil(this.uzengijePerMeter * length)),false);
@@ -90,28 +79,25 @@ public class Stubovi extends Iron{
         a2Text.setX(size / 2 - 7);
         a2Text.setY(size + 12);
 
+        // Side text
         Text sipkeText = new Text("sipki: " + this.sipke.getAmount() + "kom");
         sipkeText.setFont(Font.font(14));
         sipkeText.setX(size + 20);
         sipkeText.setY(size - 38);
-
+        //
         Text uzengijeText = new Text("uzengija: " + this.uzengije.getAmount() + "kom");
         uzengijeText.setFont(Font.font(14));
         uzengijeText.setX(size + 20);
         uzengijeText.setY(size - 22);
-
+        //
         Text uzengijePerMeterText = new Text("u metar: " + this.uzengijePerMeter + "kom");
         uzengijePerMeterText.setFont(Font.font(14));
         uzengijePerMeterText.setX(size + 20);
         uzengijePerMeterText.setY(size - 5);
 
-        // Add all elements to the group
         group.getChildren().addAll(path, topLeftCircle, topRightCircle, bottomLeftCircle, bottomRightCircle, a1Text, a2Text, sipkeText, uzengijeText, uzengijePerMeterText);
-
-        // Center the group
         group.setTranslateX(-size / 2 + 20);
         group.setTranslateY(-size / 2 + 25);
-
         return group;
     }
 }

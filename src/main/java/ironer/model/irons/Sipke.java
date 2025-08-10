@@ -1,7 +1,6 @@
 package ironer.model.irons;
 
 import javafx.scene.Group;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import lombok.Data;
@@ -25,9 +24,8 @@ public class Sipke extends Iron{
         this.perMeter = Core.getWeight(IronType.valueOf(ironType.name()));
         this.length = length;
         this.amount = amount;
-        this.weight = Math.round(this.length * perMeter * this.amount * 100.0) / 100.0;
+        this.weight = Core.getRoundNumber(this.length * perMeter * this.amount);
     }
-
 
     @Override
     public Group getDraw() {
@@ -38,16 +36,13 @@ public class Sipke extends Iron{
         line.setStrokeWidth(3);
         line.setStroke(Color.BLACK);
 
-        // Create text for length
+        // Text and text position
         Text lengthText = new Text(String.format("%.2f", length));
         lengthText.setFont(Font.font(12));
-        // Position text above the middle of the line
-        lengthText.setX(40);  // 100/2 - approximate text width/2
-        lengthText.setY(-5);  // Position above the line
+        lengthText.setX(40);
+        lengthText.setY(-5);
 
-        // Add both elements to the group
         group.getChildren().addAll(line, lengthText);
-
         return group;
     }
 }

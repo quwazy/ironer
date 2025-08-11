@@ -71,7 +71,7 @@ public class OrderView extends Stage {
         //init Scene & shortcuts
         Scene scene = new Scene(mainBox, 1100, 900);
         ShortcutController.shiftPressed(scene, this.ironShapeComboBox);
-//        ShortcutController.savePressed(scene, this);
+        ShortcutController.savePressed(scene, this);
         this.setScene(scene);
     }
 
@@ -256,7 +256,7 @@ public class OrderView extends Stage {
 
         addButton.setDefaultButton(true);
         dynamicHBox.setAlignment(Pos.CENTER);
-        dynamicHBox.getChildren().addAll(hBoxDuzina, hBoxKolicina, addButton);
+        dynamicHBox.getChildren().addAll(ironTypeComboBox, hBoxDuzina, hBoxKolicina, addButton);
     }
 
     private void initAddUzengije(){
@@ -319,7 +319,7 @@ public class OrderView extends Stage {
 
         addButton.setDefaultButton(true);
         dynamicHBox.setAlignment(Pos.CENTER);
-        dynamicHBox.getChildren().addAll(hBoxA1, hBoxA2, hBoxKolicina, hBoxTorziona, addButton);
+        dynamicHBox.getChildren().addAll(ironTypeComboBox, hBoxA1, hBoxA2, hBoxKolicina, hBoxTorziona, addButton);
     }
 
     private void initAddStubove(){

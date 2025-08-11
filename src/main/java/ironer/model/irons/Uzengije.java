@@ -50,7 +50,7 @@ public class Uzengije extends Iron{
         // Create the square with rounded corners
         Path path = new Path();
         path.setStroke(Color.BLACK);
-        path.setStrokeWidth(2);
+        path.setStrokeWidth(3);
         path.setFill(null);
 
         // Size and corner calculations
@@ -83,11 +83,20 @@ public class Uzengije extends Iron{
         Line diagonalLine2 = new Line();
         double offsetY = -5;
         diagonalLine2.setStartX(size);  // Same X start as line 1
-        diagonalLine2.setStartY(cornerSize + offsetY);  // Start 5px above line 1
+        diagonalLine2.setStartY(cornerSize + offsetY + 1);  // Start 5px above line 1
         diagonalLine2.setEndX(size - (size - (size/2 + 7))/2);  // Same X end as line 1
         diagonalLine2.setEndY(cornerSize + (size/2 + 10 - cornerSize)/2 + offsetY);  // End 5px above line 1
         diagonalLine2.setStroke(Color.BLACK);
         diagonalLine2.setStrokeWidth(1.5);
+
+        // Parallel line for torziona filed
+        Line parallelLeftLine = new Line();
+        parallelLeftLine.setStartX(cornerSize);  // Parallel line starts offset from the left edge
+        parallelLeftLine.setStartY(cornerSize + 40);  // Align parallel to the left corner
+        parallelLeftLine.setEndX(cornerSize);  // End X remains the same for vertical line
+        parallelLeftLine.setEndY(size - cornerSize - 40);  // End position slightly above bottom
+        parallelLeftLine.setStroke(Color.BLACK);  // For visibility, set the color to red (change as desired)
+        parallelLeftLine.setStrokeWidth(2);  // Visibility width for the additional line
 
         // Add text for a1 (left side)
         Text a1Text = new Text(String.format("%.0f", a1*100));
@@ -102,7 +111,11 @@ public class Uzengije extends Iron{
         a2Text.setX(size/2 - 5);
         a2Text.setY(size + 12);
 
-        group.getChildren().addAll(path, diagonalLine1, diagonalLine2, a1Text, a2Text);
+        if (this.torziona){
+            group.getChildren().addAll(path, parallelLeftLine, diagonalLine1, diagonalLine2, a1Text, a2Text);
+        }else {
+            group.getChildren().addAll(path, diagonalLine1, diagonalLine2, a1Text, a2Text);
+        }
         group.setTranslateX(-size/2);
         group.setTranslateY(-size/2 + 25);
         return group;

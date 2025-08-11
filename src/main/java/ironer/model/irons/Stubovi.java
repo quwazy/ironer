@@ -41,7 +41,7 @@ public class Stubovi extends Iron{
         // Create the square with rounded corners
         Path path = new Path();
         path.setStroke(Color.BLACK);
-        path.setStrokeWidth(2);
+        path.setStrokeWidth(3);
         path.setFill(null);
 
         // Size and corner calculations
@@ -62,11 +62,10 @@ public class Stubovi extends Iron{
         );
 
         // Add circles to each corner
-        int circle = 4;
-        Circle topLeftCircle = new Circle(cornerSize, cornerSize, circle);
-        Circle topRightCircle = new Circle(size - cornerSize, cornerSize, circle);
-        Circle bottomLeftCircle = new Circle(cornerSize, size - cornerSize, circle);
-        Circle bottomRightCircle = new Circle(size - cornerSize, size - cornerSize, circle);
+        Circle topLeftCircle = new Circle(cornerSize, cornerSize, 4);
+        Circle topRightCircle = new Circle(size - cornerSize, cornerSize, 4);
+        Circle bottomLeftCircle = new Circle(cornerSize, size - cornerSize, 4);
+        Circle bottomRightCircle = new Circle(size - cornerSize, size - cornerSize, 4);
 
         // Add text for a1 (left side)
         Text a1Text = new Text(String.format("%.0f", this.uzengije.getA1() * 100));
@@ -86,12 +85,10 @@ public class Stubovi extends Iron{
         sipkeText.setFont(Font.font(14));
         sipkeText.setX(size + 20);
         sipkeText.setY(size - 38);
-        //
         Text uzengijeText = new Text("uzengija: " + this.uzengije.getAmount() + "kom");
         uzengijeText.setFont(Font.font(14));
         uzengijeText.setX(size + 20);
         uzengijeText.setY(size - 22);
-        //
         Text uzengijePerMeterText = new Text("u metar: " + this.uzengijePerMeter + "kom");
         uzengijePerMeterText.setFont(Font.font(14));
         uzengijePerMeterText.setX(size + 20);

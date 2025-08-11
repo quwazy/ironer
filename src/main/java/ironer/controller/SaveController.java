@@ -16,17 +16,58 @@ import javafx.scene.layout.StackPane;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDateTime;
 
-public class PrintController {
+public class SaveController {
 
-    public void exportTableViewToPdf(TableView<Iron> tableView, String filePath, double totalG, double totalR, double totalV, String orderIdentifier, String orderData, String orderer) {
+    public void saveOrder(String identifier, TableView<Iron> tableView, double totalG, double totalR, double totalV, String orderData, String orderer){
+        String userHome = System.getProperty("user.home"); // Get the user's home directory
+        String ironerPath;
+
+        // Determine the directory based on the operating system
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+            ironerPath = "C://Users/janko/Documents/Ironer";
+        } else {
+            ironerPath = userHome + "/Documents/Ironer";
+        }
+        File directory = new File(ironerPath);
+
+        // Create the directory if it doesn’t exist
+        if (!directory.exists()) {
+            boolean isCreated = directory.mkdirs();
+            if (!isCreated) {
+                new WarningController("Failed to create the directory: " + ironerPath);
+                return;
+            }
+        }
+
+        // Construct the file path for the PDF
+        String name = identifier;
+        if (name.equalsIgnoreCase("RN")){
+            name = "RN" + (LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("ddMMyyHHmmss")));
+        }
+        File file = new File(directory, name+".pdf");
+        try {
+            if (file.createNewFile()) {
+                exportTableViewToPdf(tableView, file.getAbsolutePath(), totalG, totalR, totalV, name, orderData, orderer);
+            } else {
+                new WarningController("File already exists.");
+            }
+        } catch (IOException e) {
+            new WarningController("Failed to create or access the file.");
+        }
+    }
+
+    private void exportTableViewToPdf(TableView<Iron> tableView, String filePath, double totalG, double totalR, double totalV, String orderIdentifier, String orderData, String orderer) {
         try {
             Document document = new Document(PageSize.A4);
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
             document.open();
 
-            // Add titlek
+            // Add title
             Font titleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
             Paragraph title = new Paragraph("CTP Ristic D.O.O.", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);

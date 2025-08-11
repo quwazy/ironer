@@ -1,7 +1,8 @@
 package ironer.view;
 
-import ironer.controller.ClearListAction;
-import ironer.controller.PrintController;
+import ironer.controller.SaveController;
+import ironer.controller.ShortcutController;
+import ironer.controller.WarningController;
 import ironer.model.enums.IronShape;
 import ironer.model.enums.IronType;
 import ironer.model.irons.Iron;
@@ -17,11 +18,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import java.io.File;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
 public class OrderView extends Stage {
     /// order view
     private VBox mainBox;
@@ -37,17 +39,16 @@ public class OrderView extends Stage {
     private ComboBox<String> ironShapeComboBox = new ComboBox<>();
     private ComboBox<String> ironTypeComboBox = new ComboBox<>();
     private HBox dynamicHBox = new HBox(10);
-    private CheckBox torzionaCheckBox = new CheckBox();
-    private TextField uzengijePerMeterTextField = new TextField();
-    private TextField duzinaStubaTextField = new TextField();
     private TextField a1TextField = new TextField();
     private TextField a2TextField = new TextField();
+    private TextField duzinaStubaTextField = new TextField();
     private TextField amountTextField = new TextField();
     private TextField sipkePerStub = new TextField();
+    private TextField uzengijePerMeterTextField = new TextField();
+    private CheckBox torzionaCheckBox = new CheckBox();
     private Button addButton = new Button("Dodaj");
     /// table row
     private TableView<Iron> tableView = new TableView<>();
-    private Button removeButton = new Button("Ukloni");
     /// final row
     private Label totalG = new Label();
     private TextField totalGTextField = new TextField();
@@ -55,19 +56,22 @@ public class OrderView extends Stage {
     private TextField totalRTextField = new TextField();
     private Label totalV = new Label();
     private TextField totalVTextField = new TextField();
-    private Button printButton = new Button("Printaj");
+    private Button saveButton = new Button("Sacuvaj");
+    private Button cleanButton = new Button("Ocisti");
 
     public OrderView(){
         this.mainBox = new VBox(20);
         this.mainBox.setPadding(new Insets(10, 10, 20, 10));
         this.ironObservableList = FXCollections.observableArrayList();
-        //init view
+        //init View
         initInfoRow();
         initAddRow();
         initTable();
         initFinal();
-        //init Scene
-        Scene scene = new Scene(mainBox, 1100, 850);
+        //init Scene & shortcuts
+        Scene scene = new Scene(mainBox, 1100, 900);
+        ShortcutController.shiftPressed(scene, this.ironShapeComboBox);
+//        ShortcutController.savePressed(scene, this);
         this.setScene(scene);
     }
 
@@ -167,58 +171,29 @@ public class OrderView extends Stage {
         this.mainBox.getChildren().addAll(tableView);
     }
 
-    private static TableColumn<Iron, Void> getDrawColumn() {
-        TableColumn<Iron, Void> drawColumn = new TableColumn<>("Skica");
-        drawColumn.setMinWidth(250);
-        drawColumn.setMaxWidth(400);
-
-        drawColumn.setCellFactory(col -> new TableCell<Iron, Void>() {
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    Iron iron = getTableView().getItems().get(getIndex());
-                    if (iron != null) {
-                        Group drawing = iron.getDraw();
-                        StackPane pane = new StackPane(drawing);
-                        pane.setAlignment(Pos.CENTER);
-                        setGraphic(pane);
-                    } else {
-                        setGraphic(null);
-                    }
-                }
-            }
-        });
-        return drawColumn;
-    }
-
     private void initFinal(){
-        this.totalG.setText("Uzengije");
+        this.totalG.setText("Uzengije:");
         this.totalGTextField.setText("0.0");
-        this.totalR.setText("Sipke");
+        this.totalR.setText("Sipke:");
         this.totalRTextField.setText("0.0");
-        this.totalV.setText("Vezano");
+        this.totalV.setText("Vezano:");
         this.totalVTextField.setText("0.0");
 
-        this.printButton.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save PDF File");
-            fileChooser.getExtensionFilters().add(
-                    new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-            File file = fileChooser.showSaveDialog(this);
-
-            if (file != null) {
-                PrintController printController = new PrintController();
-                printController.exportTableViewToPdf(tableView, file.getAbsolutePath(), Double.parseDouble(this.totalGTextField.getText()), Double.parseDouble(this.totalRTextField.getText()), Double.parseDouble(this.totalVTextField.getText()), this.identifierTextField.getText(), this.dateTextField.getText(), this.ordererTextField.getText());
+        this.saveButton.setMinWidth(100);
+        this.saveButton.setOnAction(event -> {
+            try {
+                SaveController saveController = new SaveController();
+                saveController.saveOrder(this.identifierTextField.getText(), tableView,
+                        Double.parseDouble(this.totalGTextField.getText()), Double.parseDouble(this.totalRTextField.getText()), Double.parseDouble(this.totalVTextField.getText()),
+                        this.dateTextField.getText(), this.ordererTextField.getText());
+            } catch (NumberFormatException e) {
+                new WarningController();
             }
-
         });
 
-        this.removeButton.setOnAction(event -> {
-            ClearListAction clearListAction = new ClearListAction();
-            clearListAction.clearList(ironObservableList);
+        this.cleanButton.setMinWidth(100);
+        this.cleanButton.setOnAction(event -> {
+            ironObservableList.clear();
             updateTotal();
         });
 
@@ -227,41 +202,21 @@ public class OrderView extends Stage {
         vBoxG.getChildren().addAll(this.totalG, totalGTextField);
 
         VBox vBoxR = new VBox(5);
-        vBoxR.setAlignment(Pos.BOTTOM_LEFT);
+        vBoxR.setAlignment(Pos.CENTER_LEFT);
         vBoxR.getChildren().addAll(this.totalR, totalRTextField);
 
         VBox vBoxV = new VBox(5);
-        vBoxV.setAlignment(Pos.BOTTOM_LEFT);
+        vBoxV.setAlignment(Pos.CENTER_LEFT);
         vBoxV.getChildren().addAll(this.totalV, totalVTextField);
 
-        HBox totalHBox = new HBox(10, vBoxG,vBoxR, vBoxV, printButton, removeButton);
-        totalHBox.setAlignment(Pos.CENTER_LEFT);
+        VBox vBoxButtons = new VBox(5);
+        vBoxButtons.setAlignment(Pos.CENTER_LEFT);
+        vBoxButtons.getChildren().addAll(saveButton, cleanButton);
+
+        HBox totalHBox = new HBox(15, vBoxG,vBoxR, vBoxV, vBoxButtons);
+        totalHBox.setAlignment(Pos.CENTER);
         totalHBox.setMaxHeight(30);
         this.mainBox.getChildren().add(totalHBox);
-    }
-
-    private void updateTotal(){
-        double totalG = 0.0;
-        double totalR = 0.0;
-        double totalV = 0.0;
-
-        for (Iron iron : ironObservableList) {
-            if (iron instanceof Stubovi){
-                totalV += ((Stubovi) iron).getWeight();
-                continue;
-            }
-            if (iron instanceof Uzengije){
-                totalG += ((Uzengije) iron).getWeight();
-                continue;
-            }
-            if (iron instanceof Sipke){
-                totalR += ((Sipke) iron).getWeight();
-            }
-        }
-
-        this.totalGTextField.setText(String.format("%.2f", totalG));
-        this.totalRTextField.setText(String.format("%.2f", totalR));
-        this.totalVTextField.setText(String.format("%.2f", totalV));
     }
 
     private void initAddSipke(){
@@ -295,11 +250,7 @@ public class OrderView extends Stage {
                 a1TextField.requestFocus();
                 this.updateTotal();
             } catch (NumberFormatException e) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Invalid Input");
-                alert.setHeaderText(null);
-                alert.setContentText("Please enter valid numbers in the fields.");
-                alert.showAndWait();
+                new WarningController();
             }
         });
 
@@ -362,11 +313,7 @@ public class OrderView extends Stage {
                 a1TextField.requestFocus();
                 this.updateTotal();
             } catch (NumberFormatException e) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Invalid Input");
-                alert.setHeaderText(null);
-                alert.setContentText("Please enter valid numbers in the fields.");
-                alert.showAndWait();
+                new WarningController();
             }
         });
 
@@ -481,16 +428,63 @@ public class OrderView extends Stage {
                 amountTextField.requestFocus();
                 this.updateTotal();
             } catch (NumberFormatException e1) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Invalid Input");
-                alert.setHeaderText(null);
-                alert.setContentText("Please enter valid numbers in the fields.");
-                alert.showAndWait();
+                new WarningController();
             }
         });
 
         addButton.setDefaultButton(true);
         dynamicHBox.setAlignment(Pos.CENTER);
         dynamicHBox.getChildren().addAll(vBoxStubovi, addButton);
+    }
+
+    private void updateTotal(){
+        double totalG = 0.0;
+        double totalR = 0.0;
+        double totalV = 0.0;
+
+        for (Iron iron : ironObservableList) {
+            if (iron instanceof Stubovi){
+                totalV += ((Stubovi) iron).getWeight();
+                continue;
+            }
+            if (iron instanceof Uzengije){
+                totalG += ((Uzengije) iron).getWeight();
+                continue;
+            }
+            if (iron instanceof Sipke){
+                totalR += ((Sipke) iron).getWeight();
+            }
+        }
+
+        this.totalGTextField.setText(String.format("%.2f", totalG));
+        this.totalRTextField.setText(String.format("%.2f", totalR));
+        this.totalVTextField.setText(String.format("%.2f", totalV));
+    }
+
+    private TableColumn<Iron, Void> getDrawColumn() {
+        TableColumn<Iron, Void> drawColumn = new TableColumn<>("Skica");
+        drawColumn.setMinWidth(250);
+        drawColumn.setMaxWidth(400);
+
+        drawColumn.setCellFactory(col -> new TableCell<Iron, Void>() {
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Iron iron = getTableView().getItems().get(getIndex());
+                    if (iron != null) {
+                        Group drawing = iron.getDraw();
+                        StackPane pane = new StackPane(drawing);
+                        pane.setAlignment(Pos.CENTER);
+                        setGraphic(pane);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            }
+        });
+        return drawColumn;
     }
 }

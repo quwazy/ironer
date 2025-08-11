@@ -17,17 +17,19 @@ public class Stubovi extends Iron{
     private double length;          //ukupna duzina
     private int amount;             //ukupna kolicina stubova
     private double weight;          //ukupna kilaza
+    private int sipkePerStub;       //kolicina sipki u stubu
     private int uzengijePerMeter;   //koliko uzengija ide po metru u stub
     private Sipke sipke;            //sipka za stubove
     private Uzengije uzengije;      //uzengija za stubove
 
-    public Stubovi(IronType ironTypeSipka, int amountStubova, int sipkePerStub, double length, IronType ironTypeUzengija, int uzengijePerMeter, double a1, double a2){
+    public Stubovi(IronType ironTypeSipka, int amountStubova, int sipkePerStub, double length, IronType ironTypeUzengije, int uzengijePerMeter, double a1, double a2){
         super(IronShape.STUBOVI, ironTypeSipka);
         this.length = length;
         this.amount = amountStubova;
+        this.sipkePerStub = sipkePerStub;
         this.uzengijePerMeter = uzengijePerMeter;
         this.sipke = new Sipke(ironTypeSipka, length, amountStubova * sipkePerStub);
-        this.uzengije = new Uzengije(ironTypeUzengija, a1, a2,this.amount * ((int)
+        this.uzengije = new Uzengije(ironTypeUzengije, a1, a2,this.amount * ((int)
                 Math.ceil(this.uzengijePerMeter * length)),false);
         this.weight = Core.getRoundNumber(sipke.getWeight() + uzengije.getWeight());
     }
@@ -95,7 +97,12 @@ public class Stubovi extends Iron{
         uzengijePerMeterText.setX(size + 20);
         uzengijePerMeterText.setY(size - 5);
 
-        group.getChildren().addAll(path, topLeftCircle, topRightCircle, bottomLeftCircle, bottomRightCircle, a1Text, a2Text, sipkeText, uzengijeText, uzengijePerMeterText);
+        if (sipkePerStub == 4){
+            group.getChildren().addAll(path, topLeftCircle, topRightCircle, bottomLeftCircle, bottomRightCircle, a1Text, a2Text, sipkeText, uzengijeText, uzengijePerMeterText);
+        } else {
+            group.getChildren().addAll(path, a1Text, a2Text, sipkeText, uzengijeText, uzengijePerMeterText);
+        }
+
         group.setTranslateX(-size / 2 + 20);
         group.setTranslateY(-size / 2 + 25);
         return group;

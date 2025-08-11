@@ -17,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
@@ -68,7 +67,7 @@ public class OrderView extends Stage {
         initTable();
         initFinal();
         //init Scene
-        Scene scene = new Scene(mainBox, 1100, 800);
+        Scene scene = new Scene(mainBox, 1100, 850);
         this.setScene(scene);
     }
 
@@ -92,7 +91,6 @@ public class OrderView extends Stage {
     }
 
     private void initAddRow(){
-        //Shape Combo Box
         for (IronShape ironShape : IronShape.values()) {
             this.ironShapeComboBox.getItems().add(ironShape.name());
         }
@@ -257,18 +255,18 @@ public class OrderView extends Stage {
         this.ironTypeComboBox.getItems().addAll("R6", "R8", "R10", "R12", "R14", "R16");
         this.ironTypeComboBox.setValue("R8");
 
-        this.a1TextField.setPromptText("duzina (m)");
+        this.a1TextField.setPromptText("duzina");
         this.a1TextField.setMinWidth(55);
-        this.a1TextField.setMaxWidth(55);
+        this.a1TextField.setMaxWidth(60);
         this.a1TextField.requestFocus();
-        Label meterLabel = new Label("metara");
+        Label meterLabel = new Label("m");
         HBox hBoxDuzina = new HBox(2);
         hBoxDuzina.setAlignment(Pos.CENTER);
         hBoxDuzina.getChildren().addAll(a1TextField, meterLabel);
 
         this.amountTextField.setPromptText("komada");
         this.amountTextField.setMinWidth(55);
-        this.amountTextField.setMaxWidth(55);
+        this.amountTextField.setMaxWidth(60);
         Label kolicinaLabel = new Label("kom");
         HBox hBoxKolicina = new HBox(2);
         hBoxKolicina.setAlignment(Pos.CENTER);
@@ -303,7 +301,7 @@ public class OrderView extends Stage {
 
         this.a1TextField.setPromptText("a1(cm)");
         this.a1TextField.setMinWidth(50);
-        this.a1TextField.setMaxWidth(50);
+        this.a1TextField.setMaxWidth(55);
         this.a1TextField.requestFocus();
         Label cmLabel = new Label("cm");
         HBox hBoxA1 = new HBox(1);
@@ -312,7 +310,7 @@ public class OrderView extends Stage {
 
         this.a2TextField.setPromptText("a2(cm)");
         this.a2TextField.setMinWidth(50);
-        this.a2TextField.setMaxWidth(50);
+        this.a2TextField.setMaxWidth(55);
         Label cmmLabel = new Label("cm");
         HBox hBoxA2 = new HBox(1);
         hBoxA2.setAlignment(Pos.CENTER);
@@ -320,7 +318,7 @@ public class OrderView extends Stage {
 
         this.amountTextField.setPromptText("komada");
         this.amountTextField.setMinWidth(55);
-        this.amountTextField.setMaxWidth(55);
+        this.amountTextField.setMaxWidth(60);
         Label kolicinaLabel = new Label("kom");
         HBox hBoxKolicina = new HBox(2);
         hBoxKolicina.setAlignment(Pos.CENTER);
@@ -364,36 +362,44 @@ public class OrderView extends Stage {
     }
 
     private void initAddStubove(){
+        HBox hBoxSipke = new HBox(10);
+        hBoxSipke.setAlignment(Pos.CENTER_LEFT);
+        HBox hBoxUzengije = new HBox(10);
+        hBoxUzengije.setAlignment(Pos.CENTER_LEFT);
+
+        // hBoxSipke
         this.ironTypeComboBox.getItems().clear();
         this.ironTypeComboBox.getItems().addAll( "R8", "R10", "R12", "R14", "R16");
         this.ironTypeComboBox.setValue("R10");
 
-        this.duzinaStubaTextField.setPromptText("(metara)");
-        this.duzinaStubaTextField.setMinWidth(50);
-        this.duzinaStubaTextField.setMaxWidth(50);
-        Label duzina = new Label("duzina:");
-        HBox hBoxDuzina = new HBox(1);
-        hBoxDuzina.setAlignment(Pos.CENTER);
-        hBoxDuzina.getChildren().addAll(duzina, duzinaStubaTextField);
-
-        this.amountTextField.setPromptText("komada");
-        this.amountTextField.setMinWidth(55);
-        this.amountTextField.setMaxWidth(55);
-        Label kolicinaLabel = new Label("kom:");
-        HBox hBoxKolicina = new HBox(1);
-        hBoxKolicina.setAlignment(Pos.CENTER);
-        hBoxKolicina.getChildren().addAll(kolicinaLabel, amountTextField);
-
-        this.sipkePerStub.setPromptText("sipke po stubu");
+        this.sipkePerStub.setPromptText("sipki po stubu");
         this.sipkePerStub.setText("4");
         this.sipkePerStub.setMinWidth(30);
         this.sipkePerStub.setMaxWidth(30);
-        Label sipkePerStubLabel = new Label("sipki");
+        Label sipkePerStubLabel = new Label("sipki/stub");
         HBox hBoxSipkePerStub = new HBox(1);
         hBoxSipkePerStub.setAlignment(Pos.CENTER);
         hBoxSipkePerStub.getChildren().addAll(sipkePerStubLabel, this.sipkePerStub);
 
-        //Uzengije od stuba
+        this.amountTextField.setPromptText("komada");
+        this.amountTextField.setMinWidth(50);
+        this.amountTextField.setMaxWidth(55);
+        Label kolicinaLabel = new Label("kom");
+        HBox hBoxKolicina = new HBox(1);
+        hBoxKolicina.setAlignment(Pos.CENTER);
+        hBoxKolicina.getChildren().addAll(amountTextField, kolicinaLabel);
+
+        this.duzinaStubaTextField.setPromptText("duzina");
+        this.duzinaStubaTextField.setMinWidth(50);
+        this.duzinaStubaTextField.setMaxWidth(55);
+        Label duzina = new Label("m");
+        HBox hBoxDuzina = new HBox(1);
+        hBoxDuzina.setAlignment(Pos.CENTER);
+        hBoxDuzina.getChildren().addAll(duzinaStubaTextField, duzina);
+
+        hBoxSipke.getChildren().addAll(this.ironTypeComboBox, hBoxSipkePerStub, hBoxKolicina, hBoxDuzina);
+
+        // hBoxUzengije
         ComboBox<String> uzengijeIronTypeComboBox = new ComboBox<>();
         uzengijeIronTypeComboBox.getItems().addAll("G6", "G8", "R8", "R10");
         uzengijeIronTypeComboBox.setValue("G6");
@@ -402,14 +408,14 @@ public class OrderView extends Stage {
         this.uzengijePerMeterTextField.setMinWidth(30);
         this.uzengijePerMeterTextField.setMaxWidth(30);
         this.uzengijePerMeterTextField.setText("4");
-        Label uzengijePerMeterLabel = new Label("uz/m:");
-        HBox hBoxUzengijePerMeter = new HBox(1);
+        Label uzengijePerMeterLabel = new Label("uzeng/m");
+        HBox hBoxUzengijePerMeter = new HBox(7);
         hBoxUzengijePerMeter.setAlignment(Pos.CENTER);
         hBoxUzengijePerMeter.getChildren().addAll(uzengijePerMeterLabel, uzengijePerMeterTextField);
 
         this.a1TextField.setPromptText("a1(cm)");
         this.a1TextField.setMinWidth(50);
-        this.a1TextField.setMaxWidth(50);
+        this.a1TextField.setMaxWidth(55);
         Label cmLabel = new Label("cm");
         HBox hBoxA1 = new HBox(1);
         hBoxA1.setAlignment(Pos.CENTER);
@@ -417,15 +423,18 @@ public class OrderView extends Stage {
 
         this.a2TextField.setPromptText("a2(cm)");
         this.a2TextField.setMinWidth(50);
-        this.a2TextField.setMaxWidth(50);
+        this.a2TextField.setMaxWidth(55);
         Label cmmLabel = new Label("cm");
         HBox hBoxA2 = new HBox(1);
         hBoxA2.setAlignment(Pos.CENTER);
         hBoxA2.getChildren().addAll(a2TextField, cmmLabel);
 
-        HBox hBoxUzengije = new HBox(3);
-        hBoxUzengije.setAlignment(Pos.CENTER);
         hBoxUzengije.getChildren().addAll(uzengijeIronTypeComboBox, hBoxUzengijePerMeter, hBoxA1, hBoxA2);
+
+        // VBox
+        VBox vBoxStubovi = new VBox(9);
+        vBoxStubovi.setAlignment(Pos.CENTER);
+        vBoxStubovi.getChildren().addAll(hBoxSipke, hBoxUzengije);
 
         this.addButton.setOnAction(e -> {
             try {
@@ -437,12 +446,24 @@ public class OrderView extends Stage {
                     a2 = Double.parseDouble(a2TextField.getText())/100;
                 }
 
-                Stubovi stubovi = new Stubovi(IronType.valueOf(ironTypeComboBox.getValue()), Integer.parseInt(amountTextField.getText()), Integer.parseInt(this.sipkePerStub.getText()), Double.parseDouble(duzinaStubaTextField.getText()), IronType.valueOf(uzengijeIronTypeComboBox.getValue()), Integer.parseInt(uzengijePerMeterTextField.getText()), a1, a2);
+                Stubovi stubovi = new Stubovi(
+                        IronType.valueOf(ironTypeComboBox.getValue()),
+                        Integer.parseInt(amountTextField.getText()),
+                        Integer.parseInt(sipkePerStub.getText()),
+                        Double.parseDouble(duzinaStubaTextField.getText()),
+                        IronType.valueOf(uzengijeIronTypeComboBox.getValue()),
+                        Integer.parseInt(uzengijePerMeterTextField.getText()),
+                        a1, a2);
+
                 ironObservableList.add(stubovi);
                 duzinaStubaTextField.clear();
                 a1TextField.clear();
                 a2TextField.clear();
                 amountTextField.clear();
+                uzengijePerMeterTextField.clear();
+                sipkePerStub.clear();
+                uzengijePerMeterTextField.setText("4");
+                sipkePerStub.setText("4");
                 amountTextField.requestFocus();
                 this.updateTotal();
             } catch (NumberFormatException e1) {
@@ -456,6 +477,6 @@ public class OrderView extends Stage {
 
         addButton.setDefaultButton(true);
         dynamicHBox.setAlignment(Pos.CENTER);
-        dynamicHBox.getChildren().addAll(hBoxKolicina, hBoxSipkePerStub, hBoxDuzina, hBoxUzengije, addButton);
+        dynamicHBox.getChildren().addAll(vBoxStubovi, addButton);
     }
 }

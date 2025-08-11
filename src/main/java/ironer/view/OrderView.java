@@ -45,7 +45,7 @@ public class OrderView extends Stage {
     private TextField amountTextField = new TextField();
     private TextField sipkePerStub = new TextField();
     private Button addButton = new Button("Dodaj");
-    /// preview row
+    /// table row
     private TableView<Iron> tableView = new TableView<>();
     private Button removeButton = new Button("Ukloni");
     /// final row
@@ -107,6 +107,11 @@ public class OrderView extends Stage {
             }
             else if (IronShape.GVOZDJE_N.name().equals(this.ironShapeComboBox.getValue())) {
                 //TODO
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Function not implemented");
+                alert.setHeaderText(null);
+                alert.setContentText("This feature is not implemented yet. Please choose another shape.");
+                alert.showAndWait();
             }
         });
         this.ironShapeComboBox.setValue(IronShape.SIPKE.name());
@@ -119,6 +124,50 @@ public class OrderView extends Stage {
     }
 
     private void initTable(){
+        TableColumn<Iron, Void> drawColumn = getDrawColumn();
+
+        TableColumn<Iron, IronType> fiColumn  = new TableColumn<>("fi");
+        fiColumn.setCellValueFactory(new PropertyValueFactory<>("ironType"));
+        fiColumn.setStyle("-fx-alignment: CENTER;");
+        fiColumn.setMinWidth(50);
+        fiColumn.setMaxWidth(50);
+
+        TableColumn<Iron, Double> lengthColumn = new TableColumn<>("Duzina (m) ");
+        lengthColumn.setCellValueFactory(new PropertyValueFactory<>("length"));
+        lengthColumn.setStyle("-fx-alignment: CENTER;");
+        lengthColumn.setMinWidth(300);
+        lengthColumn.setMaxWidth(400);
+
+        TableColumn<Iron, Integer> amountColumn = new TableColumn<>("Kolicina (kom) ");
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        amountColumn.setStyle("-fx-alignment: CENTER;");
+        amountColumn.setMinWidth(180);
+        amountColumn.setMaxWidth(400);
+
+        TableColumn<Iron, Double> weightColumn = new TableColumn<>("Tezina(kg) ");
+        weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
+        weightColumn.setStyle("-fx-alignment: CENTER;");
+        weightColumn.setMinWidth(180);
+        weightColumn.setMaxWidth(400);
+
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableView.setFixedCellSize(70);
+        tableView.setMaxWidth(Double.MAX_VALUE);
+        tableView.setStyle("-fx-font-size: 18px;");
+        tableView.setItems(ironObservableList);
+        tableView.getColumns().add(drawColumn);
+        tableView.getColumns().add(fiColumn);
+        tableView.getColumns().add(lengthColumn);
+        tableView.getColumns().add(amountColumn);
+        tableView.getColumns().add(weightColumn);
+        tableView.setMaxWidth(Double.MAX_VALUE);
+        tableView.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(tableView, Priority.ALWAYS);
+
+        this.mainBox.getChildren().addAll(tableView);
+    }
+
+    private static TableColumn<Iron, Void> getDrawColumn() {
         TableColumn<Iron, Void> drawColumn = new TableColumn<>("Skica");
         drawColumn.setMinWidth(250);
         drawColumn.setMaxWidth(400);
@@ -127,7 +176,6 @@ public class OrderView extends Stage {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-
                 if (empty) {
                     setGraphic(null);
                 } else {
@@ -143,41 +191,7 @@ public class OrderView extends Stage {
                 }
             }
         });
-
-        TableColumn<Iron, IronType> fiColumn  = new TableColumn<>("fi");
-        fiColumn.setCellValueFactory(new PropertyValueFactory<>("ironType"));
-        fiColumn.setMinWidth(45);
-        fiColumn.setMaxWidth(45);
-
-        TableColumn<Iron, Double> lengthColumn = new TableColumn<>("Duzina (m) ");
-        lengthColumn.setCellValueFactory(new PropertyValueFactory<>("length"));
-        lengthColumn.setMinWidth(200);
-        lengthColumn.setMaxWidth(400);
-
-        TableColumn<Iron, Integer> amountColumn = new TableColumn<>("Kolicina (kom) ");
-        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        lengthColumn.setMinWidth(200);
-        lengthColumn.setMaxWidth(400);
-
-        TableColumn<Iron, Double> weightColumn = new TableColumn<>("Tezina(kg) ");
-        weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
-        lengthColumn.setMinWidth(200);
-        lengthColumn.setMaxWidth(400);
-        weightColumn.setStyle("-fx-alignment: CENTER;");
-
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        tableView.setFixedCellSize(70);
-//        tableView.getStylesheets().add(Objects.requireNonNull(getClass().getResource("src/main/resources/style.css")).toExternalForm());
-        tableView.setMaxWidth(Double.MAX_VALUE);
-        tableView.setStyle("-fx-font-size: 18px;");
-        this.tableView.setItems(ironObservableList);
-        this.tableView.getColumns().addAll(drawColumn, fiColumn, lengthColumn, amountColumn, weightColumn);
-        VBox.setVgrow(tableView, Priority.ALWAYS);
-        tableView.setMaxWidth(Double.MAX_VALUE);
-        tableView.setMaxHeight(Double.MAX_VALUE);
-
-        this.mainBox.getChildren().addAll(this.tableView);
+        return drawColumn;
     }
 
     private void initFinal(){

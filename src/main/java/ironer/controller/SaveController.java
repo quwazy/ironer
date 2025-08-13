@@ -1,9 +1,10 @@
 package ironer.controller;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.lowagie.text.*;
+import com.lowagie.text.Font;
+import com.lowagie.text.Image;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.*;
 import ironer.model.irons.Iron;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
@@ -14,6 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -71,14 +73,14 @@ public class SaveController {
             titleTable.setWidths(new float[]{2.0f, 2.0f, 2.0f});
             titleTable.setSpacingBefore(10);
 
-            Font subTitleFont = new Font(Font.FontFamily.TIMES_ROMAN, 9, Font.NORMAL, BaseColor.DARK_GRAY);
+            Font subTitleFont = new Font(StandardFonts.HELVETICA_BOLD.create(9));
             Paragraph subTitle = new Paragraph("Nikolaja Saltikova 8, Zemun\ntelefon: 011/314-1092\nemail: ctpristic.bgd@gmail.com", subTitleFont);
             subTitle.setAlignment(Element.ALIGN_LEFT);
             PdfPCell leftCell = new PdfPCell();
             leftCell.addElement(subTitle);
             leftCell.setBorder(Rectangle.NO_BORDER);
 
-            Font titleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
+            Font titleFont = new Font(StandardFonts.HELVETICA_BOLD.create(18));
             Paragraph title = new Paragraph("CTP Ristic D.O.O.", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             PdfPCell titleCell = new PdfPCell();
@@ -138,7 +140,7 @@ public class SaveController {
             for (TableColumn<Iron, ?> column : tableView.getColumns()) {
                 PdfPCell header = new PdfPCell(new Phrase(column.getText()));
                 header.setHorizontalAlignment(Element.ALIGN_CENTER);
-                header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                header.setBackgroundColor(Color.LIGHT_GRAY);
                 pdfTable.addCell(header);
             }
 
@@ -181,7 +183,7 @@ public class SaveController {
                             ImageIO.write(bufferedImage, "png", baos);
                             Image pdfImage = Image.getInstance(baos.toByteArray());
                             pdfImage.scaleToFit(230, 60);
-                            pdfImage.setBackgroundColor(BaseColor.WHITE);
+                            pdfImage.setBackgroundColor(Color.WHITE);
 
                             drawingCell.addElement(pdfImage);
                             drawingCell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -210,15 +212,15 @@ public class SaveController {
 
             PdfPCell headerUzengije = new PdfPCell(new Phrase("Total Uzengije:"));
             headerUzengije.setHorizontalAlignment(Element.ALIGN_LEFT);
-            headerUzengije.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            headerUzengije.setBackgroundColor(Color.LIGHT_GRAY);
 
             PdfPCell headerSipke = new PdfPCell(new Phrase("Total Sipke:"));
             headerSipke.setHorizontalAlignment(Element.ALIGN_LEFT);
-            headerSipke.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            headerSipke.setBackgroundColor(Color.LIGHT_GRAY);
 
             PdfPCell headerVezano = new PdfPCell(new Phrase("Total Vezano:"));
             headerVezano.setHorizontalAlignment(Element.ALIGN_LEFT);
-            headerVezano.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            headerVezano.setBackgroundColor(Color.LIGHT_GRAY);
 
             pdfTotalTable.addCell(headerUzengije);
             pdfTotalTable.addCell(headerSipke);

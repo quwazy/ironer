@@ -2,10 +2,9 @@ module ironer.ironer {
     requires static lombok;
     requires javafx.controls;
     requires javafx.fxml;
-    requires org.kordamp.bootstrapfx.core;
     requires java.desktop;
-    requires itextpdf;
     requires javafx.swing;
+    requires com.github.librepdf.openpdf;
     exports ironer;
     opens ironer to javafx.fxml;
     opens ironer.model to javafx.base;

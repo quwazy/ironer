@@ -74,6 +74,7 @@ public class SaveController {
             titleTable.setSpacingBefore(10);
 
             Font subTitleFont = new Font(StandardFonts.HELVETICA_BOLD.create(9));
+            subTitleFont.setColor(Color.GRAY);
             Paragraph subTitle = new Paragraph("Nikolaja Saltikova 8, Zemun\ntelefon: 011/314-1092\nemail: ctpristic.bgd@gmail.com", subTitleFont);
             subTitle.setAlignment(Element.ALIGN_LEFT);
             PdfPCell leftCell = new PdfPCell();

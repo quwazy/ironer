@@ -5,10 +5,7 @@ import ironer.controller.ShortcutController;
 import ironer.controller.WarningController;
 import ironer.model.enums.IronShape;
 import ironer.model.enums.IronType;
-import ironer.model.irons.Iron;
-import ironer.model.irons.Sipke;
-import ironer.model.irons.Stubovi;
-import ironer.model.irons.Uzengije;
+import ironer.model.irons.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -24,6 +21,7 @@ import javafx.stage.Stage;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Getter
@@ -119,12 +117,7 @@ public class OrderView extends Stage {
                 initAddStubove();
             }
             else if (IronShape.GVOZDJE_N.name().equals(this.ironShapeComboBox.getValue())) {
-                //TODO
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Function not implemented");
-                alert.setHeaderText(null);
-                alert.setContentText("This feature is not implemented yet. Please choose another shape.");
-                alert.showAndWait();
+                initAddGvozdjeN();
             }
         });
         this.ironShapeComboBox.setValue(IronShape.SIPKE.name());
@@ -450,6 +443,56 @@ public class OrderView extends Stage {
         dynamicHBox.getChildren().addAll(vBoxStubovi, addButton);
     }
 
+    private void initAddGvozdjeN(){
+        this.ironTypeComboBox.getItems().clear();
+        for (IronType ironType : IronType.values()) {
+            this.ironTypeComboBox.getItems().add(ironType.name());
+        }
+        this.ironTypeComboBox.setValue("R8");
+
+        ComboBox<String> realIronShapeComboBox = new ComboBox<>();
+        for (IronShape ironShape : IronShape.values()) {
+            if (ironShape == IronShape.GVOZDJE_N)
+                continue;
+            realIronShapeComboBox.getItems().add(ironShape.name());
+        }
+        realIronShapeComboBox.setValue("SIPKE");
+
+        this.a1TextField.setPromptText("duzina");
+        this.a1TextField.setMinWidth(55);
+        this.a1TextField.setMaxWidth(60);
+        this.a1TextField.requestFocus();
+        Label meterLabel = new Label("m");
+        HBox hBoxDuzina = new HBox(2);
+        hBoxDuzina.setAlignment(Pos.CENTER);
+        hBoxDuzina.getChildren().addAll(a1TextField, meterLabel);
+
+        this.amountTextField.setPromptText("komada");
+        this.amountTextField.setMinWidth(55);
+        this.amountTextField.setMaxWidth(60);
+        Label kolicinaLabel = new Label("kom");
+        HBox hBoxKolicina = new HBox(2);
+        hBoxKolicina.setAlignment(Pos.CENTER);
+        hBoxKolicina.getChildren().addAll(amountTextField, kolicinaLabel);
+
+        this.addButton.setOnAction(event -> {
+            try {
+                GvozdjeN gvozdjeN = new GvozdjeN(IronShape.valueOf(realIronShapeComboBox.getValue()), IronType.valueOf(ironTypeComboBox.getValue()), Double.parseDouble(a1TextField.getText()), Integer.parseInt(amountTextField.getText()));
+                ironObservableList.add(gvozdjeN);
+                a1TextField.clear();
+                amountTextField.clear();
+                a1TextField.requestFocus();
+                this.updateTotal();
+            } catch (NumberFormatException e) {
+                new WarningController();
+            }
+        });
+
+        addButton.setDefaultButton(true);
+        dynamicHBox.setAlignment(Pos.CENTER);
+        dynamicHBox.getChildren().addAll(realIronShapeComboBox, ironTypeComboBox, hBoxDuzina, hBoxKolicina, addButton);
+    }
+
     private void updateTotal(){
         double totalG = 0.0;
         double totalR = 0.0;
@@ -466,6 +509,16 @@ public class OrderView extends Stage {
             }
             if (iron instanceof Sipke){
                 totalR += ((Sipke) iron).getWeight();
+            }
+            if (iron instanceof GvozdjeN){
+                switch (((GvozdjeN) iron).getRealIronShape()){
+                    case SIPKE -> totalR += ((GvozdjeN) iron).getWeight();
+                    case UZENGIJE -> totalG += ((GvozdjeN) iron).getWeight();
+                    case STUBOVI -> totalV += ((GvozdjeN) iron).getWeight();
+                    default -> {
+                        new WarningController("Something wrong with GvozdjeN");
+                    }
+                }
             }
         }
 

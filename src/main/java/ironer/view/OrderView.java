@@ -38,6 +38,8 @@ public class OrderView extends Stage {
     private TextField ordererTextField = new TextField();
     private Label dateLabel = new Label();
     private TextField dateTextField = new TextField();
+    private Label noteLabel = new Label();
+    private TextField noteTextField = new TextField();
     /// add row
     private ComboBox<String> ironShapeComboBox = new ComboBox<>();
     private ComboBox<String> ironTypeComboBox = new ComboBox<>();
@@ -89,11 +91,15 @@ public class OrderView extends Stage {
 
         this.dateLabel.setText("Datum:");
         this.dateTextField.setPromptText("datum");
-        this.dateTextField.setText(LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy.")));
+        this.dateTextField.setText(LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+
+        this.noteLabel.setText("Napomena:");
+        this.noteTextField.setPromptText("napomena");
+        this.noteTextField.setText(" ");
 
         HBox hBox = new HBox(7);
         hBox.setAlignment(Pos.CENTER);
-        hBox.getChildren().addAll(identifierLabel, identifierTextField, ordererLabel, ordererTextField, dateLabel, dateTextField);
+        hBox.getChildren().addAll(identifierLabel, identifierTextField, ordererLabel, ordererTextField, noteLabel, noteTextField, dateLabel, dateTextField);
         this.mainBox.getChildren().addAll(hBox);
     }
 
@@ -132,6 +138,7 @@ public class OrderView extends Stage {
 
     private void initTable(){
         TableColumn<Iron, Void> drawColumn = getDrawColumn();
+        TableColumn<Iron, Void> actionsCol = getRemoveIronColumn();
 
         TableColumn<Iron, IronType> fiColumn  = new TableColumn<>("fi");
         fiColumn.setCellValueFactory(new PropertyValueFactory<>("ironType"));
@@ -157,37 +164,10 @@ public class OrderView extends Stage {
         weightColumn.setMinWidth(180);
         weightColumn.setMaxWidth(400);
 
-        TableColumn<Iron, Void> actionsCol = new TableColumn<>("");
-        actionsCol.setMinWidth(50);
-        actionsCol.setMaxWidth(60);
-        actionsCol.setStyle("-fx-alignment: CENTER;");
-        actionsCol.setCellFactory(col -> new TableCell<>() {
-            private final Button deleteBtn = new Button();
-            {
-                Image deleteImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/bin.png")));
-                ImageView iconView = new ImageView(deleteImg);
-                iconView.setFitWidth(15);
-                iconView.setFitHeight(15);
-                deleteBtn.setGraphic(iconView);
-
-                deleteBtn.setOnAction(evt -> {
-                    Iron iron = getTableView().getItems().get(getIndex());
-                    ironObservableList.remove(iron);
-                    updateTotal();
-                });
-                deleteBtn.setMaxWidth(Double.MAX_VALUE);
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : deleteBtn);
-            }
-        });
-
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.setFixedCellSize(70);
         tableView.setMaxWidth(Double.MAX_VALUE);
+        tableView.setMaxHeight(Double.MAX_VALUE);
         tableView.setStyle("-fx-font-size: 18px;");
         tableView.setItems(ironObservableList);
         tableView.getColumns().add(drawColumn);
@@ -196,10 +176,8 @@ public class OrderView extends Stage {
         tableView.getColumns().add(amountColumn);
         tableView.getColumns().add(weightColumn);
         tableView.getColumns().add(actionsCol);
-        tableView.setMaxWidth(Double.MAX_VALUE);
-        tableView.setMaxHeight(Double.MAX_VALUE);
-        VBox.setVgrow(tableView, Priority.ALWAYS);
 
+        VBox.setVgrow(tableView, Priority.ALWAYS);
         this.mainBox.getChildren().addAll(tableView);
     }
 
@@ -217,7 +195,7 @@ public class OrderView extends Stage {
                 SaveController saveController = new SaveController();
                 saveController.saveOrder(this.identifierTextField.getText(), tableView,
                         Double.parseDouble(this.totalGTextField.getText()), Double.parseDouble(this.totalRTextField.getText()), Double.parseDouble(this.totalVTextField.getText()),
-                        this.dateTextField.getText(), this.ordererTextField.getText());
+                        this.dateTextField.getText(), this.ordererTextField.getText(), this.noteTextField.getText());
             } catch (NumberFormatException e) {
                 new WarningController();
             }
@@ -226,6 +204,8 @@ public class OrderView extends Stage {
         this.cleanButton.setMinWidth(100);
         this.cleanButton.setOnAction(event -> {
             ironObservableList.clear();
+            this.identifierTextField.setText("RN");
+            this.ordererTextField.setText(" ");
             updateTotal();
         });
 
@@ -518,5 +498,36 @@ public class OrderView extends Stage {
             }
         });
         return drawColumn;
+    }
+
+    private TableColumn<Iron, Void> getRemoveIronColumn() {
+        TableColumn<Iron, Void> actionsCol = new TableColumn<>("");
+        actionsCol.setMinWidth(50);
+        actionsCol.setMaxWidth(60);
+        actionsCol.setStyle("-fx-alignment: CENTER;");
+        actionsCol.setCellFactory(col -> new TableCell<>() {
+            private final Button deleteBtn = new Button();
+            {
+                Image deleteImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/bin.png")));
+                ImageView iconView = new ImageView(deleteImg);
+                iconView.setFitWidth(15);
+                iconView.setFitHeight(15);
+                deleteBtn.setGraphic(iconView);
+
+                deleteBtn.setOnAction(evt -> {
+                    Iron iron = getTableView().getItems().get(getIndex());
+                    ironObservableList.remove(iron);
+                    updateTotal();
+                });
+                deleteBtn.setMaxWidth(Double.MAX_VALUE);
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : deleteBtn);
+            }
+        });
+        return actionsCol;
     }
 }

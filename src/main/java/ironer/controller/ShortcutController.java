@@ -28,7 +28,8 @@ public class ShortcutController {
                             Double.parseDouble(orderView.getTotalRTextField().getText()),
                             Double.parseDouble(orderView.getTotalVTextField().getText()),
                             orderView.getDateTextField().getText(),
-                            orderView.getOrdererTextField().getText()
+                            orderView.getOrdererTextField().getText(),
+                            orderView.getNoteTextField().getText()
                     );
                 } catch (NumberFormatException e) {
                     new WarningController();

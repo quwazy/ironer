@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 
 public class SaveController {
 
-    public void saveOrder(String identifier, TableView<Iron> tableView, double totalG, double totalR, double totalV, String orderData, String orderer){
+    public void saveOrder(String identifier, TableView<Iron> tableView, double totalG, double totalR, double totalV, String orderData, String orderer, String note){
         String userHome = System.getProperty("user.home"); // Get the user's home directory
         String ironerPath;
 
@@ -52,7 +52,7 @@ public class SaveController {
         File file = new File(directory, name+".pdf");
         try {
             if (file.createNewFile()) {
-                exportTableViewToPdf(tableView, file.getAbsolutePath(), totalG, totalR, totalV, name, orderData, orderer);
+                exportTableViewToPdf(tableView, file.getAbsolutePath(), totalG, totalR, totalV, name, orderData, orderer, note);
             } else {
                 new WarningController("File already exists.");
             }
@@ -61,7 +61,7 @@ public class SaveController {
         }
     }
 
-    private void exportTableViewToPdf(TableView<Iron> tableView, String filePath, double totalG, double totalR, double totalV, String orderIdentifier, String orderData, String orderer) {
+    private void exportTableViewToPdf(TableView<Iron> tableView, String filePath, double totalG, double totalR, double totalV, String orderIdentifier, String orderData, String orderer, String note) {
         try {
             Document document = new Document(PageSize.A4);
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
@@ -121,7 +121,7 @@ public class SaveController {
             dateCell.setBorder(Rectangle.NO_BORDER);
             dateCell.setBorderWidthBottom(1f);
 
-            PdfPCell noteCell = new PdfPCell(new Phrase("Napomena: "));
+            PdfPCell noteCell = new PdfPCell(new Phrase(note));
             noteCell.setHorizontalAlignment(Element.ALIGN_LEFT);
             noteCell.setBorder(Rectangle.NO_BORDER);
             noteCell.setBorderWidthBottom(1f);

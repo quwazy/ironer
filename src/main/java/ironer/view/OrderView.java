@@ -17,11 +17,14 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 public class OrderView extends Stage {
@@ -154,6 +157,34 @@ public class OrderView extends Stage {
         weightColumn.setMinWidth(180);
         weightColumn.setMaxWidth(400);
 
+        TableColumn<Iron, Void> actionsCol = new TableColumn<>("");
+        actionsCol.setMinWidth(50);
+        actionsCol.setMaxWidth(60);
+        actionsCol.setStyle("-fx-alignment: CENTER;");
+        actionsCol.setCellFactory(col -> new TableCell<>() {
+            private final Button deleteBtn = new Button();
+            {
+                Image deleteImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/bin.png")));
+                ImageView iconView = new ImageView(deleteImg);
+                iconView.setFitWidth(15);
+                iconView.setFitHeight(15);
+                deleteBtn.setGraphic(iconView);
+
+                deleteBtn.setOnAction(evt -> {
+                    Iron iron = getTableView().getItems().get(getIndex());
+                    ironObservableList.remove(iron);
+                    updateTotal();
+                });
+                deleteBtn.setMaxWidth(Double.MAX_VALUE);
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : deleteBtn);
+            }
+        });
+
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.setFixedCellSize(70);
         tableView.setMaxWidth(Double.MAX_VALUE);
@@ -164,6 +195,7 @@ public class OrderView extends Stage {
         tableView.getColumns().add(lengthColumn);
         tableView.getColumns().add(amountColumn);
         tableView.getColumns().add(weightColumn);
+        tableView.getColumns().add(actionsCol);
         tableView.setMaxWidth(Double.MAX_VALUE);
         tableView.setMaxHeight(Double.MAX_VALUE);
         VBox.setVgrow(tableView, Priority.ALWAYS);

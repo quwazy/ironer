@@ -121,16 +121,17 @@ public class SaveController {
             dateCell.setBorder(Rectangle.NO_BORDER);
             dateCell.setBorderWidthBottom(1f);
 
-            PdfPCell emptyCellWithBorder = new PdfPCell(new Phrase(" "));
-            emptyCellWithBorder.setBorder(Rectangle.NO_BORDER);
-            emptyCellWithBorder.setBorderWidthBottom(1f);
+            PdfPCell noteCell = new PdfPCell(new Phrase("Napomena: "));
+            noteCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            noteCell.setBorder(Rectangle.NO_BORDER);
+            noteCell.setBorderWidthBottom(1f);
 
             infoTable.addCell(orderIdentifierCell);
             infoTable.addCell(emptyCell);
             infoTable.addCell(ordererCell);
             infoTable.addCell(dateCell);
             infoTable.addCell(emptyCell);
-            infoTable.addCell(emptyCellWithBorder);
+            infoTable.addCell(noteCell);
             document.add(infoTable);
             document.add(new Paragraph(" "));
 

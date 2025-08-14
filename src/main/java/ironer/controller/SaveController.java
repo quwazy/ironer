@@ -150,8 +150,9 @@ public class SaveController {
             float[] columnWidths = new float[tableView.getColumns().size()];
             for (int i = 0; i < tableView.getColumns().size(); i++) {
                 TableColumn<Iron, ?> column = tableView.getColumns().get(i);
-
-                // Assign widths based on column title or type
+                if ("".equals(column.getText())){
+                    continue;
+                }
                 if ("Skica".equals(column.getText())) {
                     columnWidths[i] = 4.0f; // Wider for the "Skica" column
                 } else if ("fi".equals(column.getText())) {

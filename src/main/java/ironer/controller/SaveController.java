@@ -7,12 +7,15 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
 import ironer.model.irons.Iron;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Group;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -171,10 +174,13 @@ public class SaveController {
                     if ("Skica".equals(column.getText())) {
                         // Add drawing for "Skica" column
                         PdfPCell drawingCell = new PdfPCell();
+                        drawingCell.setBackgroundColor(Color.WHITE);
+
                         if (iron.getDraw() != null) {
                             // Create image from JavaFX drawing
-                            Group drawing = iron.getDraw();
-                            Scene scene = new Scene(new StackPane(drawing), 250, 100);
+                            StackPane pane = new StackPane(iron.getDraw());
+                            pane.setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                            Scene scene = new Scene(pane, 250, 100, javafx.scene.paint.Color.WHITE);
                             WritableImage image = new WritableImage(250, 100);
                             scene.snapshot(image);
 

@@ -206,6 +206,7 @@ public class OrderView extends Stage {
             ironObservableList.clear();
             this.identifierTextField.setText("RN");
             this.ordererTextField.setText(" ");
+            this.noteTextField.setText(" ");
             updateTotal();
         });
 

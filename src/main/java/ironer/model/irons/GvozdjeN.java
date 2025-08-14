@@ -31,8 +31,8 @@ public class GvozdjeN extends Iron{
     public Group getDraw() {
         Group group = new Group();
 
-        Circle circle = new Circle(0, 0, 0.5);
-        circle.setStrokeWidth(0.5);
+        Circle circle = new Circle(0, 0, 0.1);
+        circle.setStrokeWidth(0.1);
         circle.setFill(null);
         circle.setStroke(Color.BLACK);
 

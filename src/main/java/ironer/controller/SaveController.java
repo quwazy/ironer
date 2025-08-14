@@ -47,7 +47,7 @@ public class SaveController {
         // Construct the file path for the PDF
         String name = identifier;
         if (name.equalsIgnoreCase("RN")){
-            name = "RN" + (LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("ddMMHHmmss")));
+            name = "RN-" + (LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyMMddHHmms")));
         }
         File file = new File(directory, name+".pdf");
         try {

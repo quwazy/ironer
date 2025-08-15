@@ -27,6 +27,7 @@ public class ShortcutController {
                             Double.parseDouble(orderView.getTotalGTextField().getText()),
                             Double.parseDouble(orderView.getTotalRTextField().getText()),
                             Double.parseDouble(orderView.getTotalVTextField().getText()),
+                            Double.parseDouble(orderView.getTotalMTextField().getText()),
                             orderView.getDateTextField().getText(),
                             orderView.getOrdererTextField().getText(),
                             orderView.getNoteTextField().getText()

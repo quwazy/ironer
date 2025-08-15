@@ -212,7 +212,7 @@ public class OrderView extends Stage {
             try {
                 SaveController saveController = new SaveController();
                 saveController.saveOrder(this.identifierTextField.getText(), tableView,
-                        Double.parseDouble(this.totalGTextField.getText()), Double.parseDouble(this.totalRTextField.getText()), Double.parseDouble(this.totalVTextField.getText()),
+                        Double.parseDouble(this.totalGTextField.getText()), Double.parseDouble(this.totalRTextField.getText()), Double.parseDouble(this.totalVTextField.getText()), Double.parseDouble(this.totalMTextField.getText()),
                         this.dateTextField.getText(), this.ordererTextField.getText(), this.noteTextField.getText());
             } catch (NumberFormatException e) {
                 new WarningController();

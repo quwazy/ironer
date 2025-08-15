@@ -226,7 +226,7 @@ public class OrderView extends Stage {
 
     private void initAddSipke(){
         this.ironTypeComboBox.getItems().clear();
-        this.ironTypeComboBox.getItems().addAll("R6", "R8", "R10", "R12", "R14", "R16");
+        this.ironTypeComboBox.getItems().addAll("R6", "R8", "R10", "R12", "R14", "R16", "R18", "R20", "R22", "R25", "R28");
         this.ironTypeComboBox.setValue("R8");
 
         this.a1TextField.setPromptText("duzina");
@@ -266,7 +266,7 @@ public class OrderView extends Stage {
 
     private void initAddUzengije(){
         this.ironTypeComboBox.getItems().clear();
-        this.ironTypeComboBox.getItems().addAll("G6", "G8", "R8", "R10");
+        this.ironTypeComboBox.getItems().addAll("G6", "G8", "R8", "R10", "R12", "R14", "R16");
         this.ironTypeComboBox.setValue("G6");
 
         this.a1TextField.setPromptText("a1(cm)");
@@ -335,7 +335,7 @@ public class OrderView extends Stage {
 
         // hBoxSipke
         this.ironTypeComboBox.getItems().clear();
-        this.ironTypeComboBox.getItems().addAll( "R8", "R10", "R12", "R14", "R16");
+        this.ironTypeComboBox.getItems().addAll( "R8", "R10", "R12", "R14", "R16", "R18", "R20");
         this.ironTypeComboBox.setValue("R10");
 
         this.sipkePerStub.setPromptText("sipki po stubu");
@@ -367,7 +367,7 @@ public class OrderView extends Stage {
 
         // hBoxUzengije
         ComboBox<String> uzengijeIronTypeComboBox = new ComboBox<>();
-        uzengijeIronTypeComboBox.getItems().addAll("G6", "G8", "R8", "R10");
+        uzengijeIronTypeComboBox.getItems().addAll("G6", "G8", "R8", "R10", "R12", "R14", "R16");
         uzengijeIronTypeComboBox.setValue("G6");
 
         this.uzengijePerMeterTextField.setPromptText("uzengije po metru");

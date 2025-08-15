@@ -112,7 +112,7 @@ public class Uzengije extends Iron{
         a2Text.setY(size + 12);
 
         if (this.torziona){
-            group.getChildren().addAll(path, parallelLeftLine, diagonalLine1, diagonalLine2, a1Text, a2Text);
+            group.getChildren().addAll(path, parallelLeftLine, a1Text, a2Text);
         }else {
             group.getChildren().addAll(path, diagonalLine1, diagonalLine2, a1Text, a2Text);
         }

@@ -58,6 +58,8 @@ public class OrderView extends Stage {
     private TextField totalRTextField = new TextField();
     private Label totalV = new Label();
     private TextField totalVTextField = new TextField();
+    private Label totalM = new Label();
+    private TextField totalMTextField = new TextField();
     private Button saveButton = new Button("Sacuvaj");
     private Button cleanButton = new Button("Ocisti");
 
@@ -202,6 +204,8 @@ public class OrderView extends Stage {
         this.totalRTextField.setText("0.0");
         this.totalV.setText("Vezano:");
         this.totalVTextField.setText("0.0");
+        this.totalM.setText("Mreze:");
+        this.totalMTextField.setText("0.0");
 
         this.saveButton.setMinWidth(100);
         this.saveButton.setOnAction(event -> {
@@ -236,11 +240,15 @@ public class OrderView extends Stage {
         vBoxV.setAlignment(Pos.CENTER_LEFT);
         vBoxV.getChildren().addAll(this.totalV, totalVTextField);
 
+        VBox vBoxM = new VBox(5);
+        vBoxM.setAlignment(Pos.CENTER_LEFT);
+        vBoxM.getChildren().addAll(this.totalM, totalMTextField);
+
         VBox vBoxButtons = new VBox(5);
         vBoxButtons.setAlignment(Pos.CENTER_LEFT);
         vBoxButtons.getChildren().addAll(saveButton, cleanButton);
 
-        HBox totalHBox = new HBox(15, vBoxG,vBoxR, vBoxV, vBoxButtons);
+        HBox totalHBox = new HBox(15, vBoxG,vBoxR, vBoxV, vBoxM, vBoxButtons);
         totalHBox.setAlignment(Pos.CENTER);
         totalHBox.setMaxHeight(30);
         this.mainBox.getChildren().add(totalHBox);
@@ -549,6 +557,7 @@ public class OrderView extends Stage {
         double totalG = 0.0;
         double totalR = 0.0;
         double totalV = 0.0;
+        double totalM = 0.0;
 
         for (Iron iron : ironObservableList) {
             if (iron instanceof Stubovi){
@@ -561,6 +570,11 @@ public class OrderView extends Stage {
             }
             if (iron instanceof Sipke){
                 totalR += ((Sipke) iron).getWeight();
+                continue;
+            }
+            if (iron instanceof Mreze){
+                totalM += ((Mreze) iron).getWeight();
+                continue;
             }
             if (iron instanceof GvozdjeN){
                 switch (((GvozdjeN) iron).getRealIronShape()){
@@ -577,6 +591,7 @@ public class OrderView extends Stage {
         this.totalGTextField.setText(String.format("%.2f", totalG));
         this.totalRTextField.setText(String.format("%.2f", totalR));
         this.totalVTextField.setText(String.format("%.2f", totalV));
+        this.totalMTextField.setText(String.format("%.2f", totalM));
     }
 
     private TableColumn<Iron, Void> getDrawColumn() {

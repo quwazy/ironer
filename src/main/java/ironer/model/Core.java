@@ -18,6 +18,16 @@ public class Core {
     public static final double R22 = 3.092;
     public static final double R25 = 3.85;
     public static final double R28 = 4.95;
+    /// MREZE
+    private static final int F4 = 18;
+    private static final int F5 = 28;
+    private static final int F6 = 40;
+    private static final int F65 = 47;
+    private static final int F7 = 54;
+    private static final int F75 = 62;
+    private static final int F8 = 71;
+    private static final int F9 = 92;
+    private static final int F10 = 111;
 
     public static double getRoundNumber(double number){
         return Math.round(number * 100.0) / 100.0;
@@ -38,6 +48,15 @@ public class Core {
             case "R22" -> R22;
             case "R25" -> R25;
             case "R28" -> R28;
+            case "F4" -> F4;
+            case "F5" -> F5;
+            case "F6" -> F6;
+            case "F65" -> F65;
+            case "F7" -> F7;
+            case "F75" -> F75;
+            case "F8" -> F8;
+            case "F9" -> F9;
+            case "F10" -> F10;
             default -> 0;
         };
     }

@@ -5,6 +5,7 @@ module ironer.ironer {
     requires java.desktop;
     requires javafx.swing;
     requires com.github.librepdf.openpdf;
+    requires javafx.graphics;
     exports ironer;
     opens ironer to javafx.fxml;
     opens ironer.model to javafx.base;

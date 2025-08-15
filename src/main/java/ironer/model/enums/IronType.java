@@ -14,4 +14,13 @@ public enum IronType {
     R28,
     G6,
     G8,
+    F4,
+    F5,
+    F6,
+    F65,
+    F7,
+    F75,
+    F8,
+    F9,
+    F10
 }

@@ -118,6 +118,9 @@ public class OrderView extends Stage {
             else if (IronShape.GVOZDJE_N.name().equals(this.ironShapeComboBox.getValue())) {
                 initAddGvozdjeN();
             }
+            else if (IronShape.MREZE.name().equals(this.ironShapeComboBox.getValue())) {
+                initAddMreze();
+            }
         });
         this.ironShapeComboBox.setValue(IronShape.SIPKE.name());
         initAddSipke();
@@ -509,6 +512,37 @@ public class OrderView extends Stage {
         addButton.setDefaultButton(true);
         dynamicHBox.setAlignment(Pos.CENTER);
         dynamicHBox.getChildren().addAll(realIronShapeComboBox, ironTypeComboBox, hBoxDuzina, hBoxKolicina, addButton);
+    }
+
+    private void initAddMreze(){
+        this.ironTypeComboBox.getItems().clear();
+        this.ironTypeComboBox.getItems().addAll("F4", "F5", "F6", "F6.5", "F7", "F7.5", "F8", "F9", "F10");
+        this.ironTypeComboBox.setValue("F5");
+
+        this.amountTextField.setPromptText("komada");
+        this.amountTextField.setMinWidth(60);
+        this.amountTextField.setMaxWidth(60);
+        Label kolicinaLabel = new Label("kom");
+        HBox hBoxKolicina = new HBox(2);
+        hBoxKolicina.setAlignment(Pos.CENTER);
+        hBoxKolicina.getChildren().addAll(amountTextField, kolicinaLabel);
+
+        this.addButton.setOnAction(event -> {
+            try {
+                String ironType = this.ironTypeComboBox.getValue().replace(".", "");
+                Mreze mreze = new Mreze(IronType.valueOf(ironType), Integer.parseInt(amountTextField.getText()));
+                ironObservableList.add(mreze);
+                amountTextField.clear();
+                amountTextField.requestFocus();
+                this.updateTotal();
+            } catch (NumberFormatException e) {
+                new WarningController();
+            }
+        });
+
+        addButton.setDefaultButton(true);
+        dynamicHBox.setAlignment(Pos.CENTER);
+        dynamicHBox.getChildren().addAll(ironTypeComboBox, hBoxKolicina, addButton);
     }
 
     private void updateTotal(){

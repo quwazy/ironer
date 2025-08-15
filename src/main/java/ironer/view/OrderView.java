@@ -290,6 +290,7 @@ public class OrderView extends Stage {
         });
 
         addButton.setDefaultButton(true);
+        a1TextField.requestFocus();
         dynamicHBox.setAlignment(Pos.CENTER);
         dynamicHBox.getChildren().addAll(ironTypeComboBox, hBoxDuzina, hBoxKolicina, addButton);
     }
@@ -353,6 +354,7 @@ public class OrderView extends Stage {
         });
 
         addButton.setDefaultButton(true);
+        a1TextField.requestFocus();
         dynamicHBox.setAlignment(Pos.CENTER);
         dynamicHBox.getChildren().addAll(ironTypeComboBox, hBoxA1, hBoxA2, hBoxKolicina, hBoxTorziona, addButton);
     }
@@ -467,6 +469,7 @@ public class OrderView extends Stage {
             }
         });
 
+        amountTextField.requestFocus();
         addButton.setDefaultButton(true);
         dynamicHBox.setAlignment(Pos.CENTER);
         dynamicHBox.getChildren().addAll(vBoxStubovi, addButton);
@@ -518,6 +521,7 @@ public class OrderView extends Stage {
         });
 
         addButton.setDefaultButton(true);
+        a1TextField.requestFocus();
         dynamicHBox.setAlignment(Pos.CENTER);
         dynamicHBox.getChildren().addAll(realIronShapeComboBox, ironTypeComboBox, hBoxDuzina, hBoxKolicina, addButton);
     }
@@ -549,6 +553,7 @@ public class OrderView extends Stage {
         });
 
         addButton.setDefaultButton(true);
+        amountTextField.requestFocus();
         dynamicHBox.setAlignment(Pos.CENTER);
         dynamicHBox.getChildren().addAll(ironTypeComboBox, hBoxKolicina, addButton);
     }

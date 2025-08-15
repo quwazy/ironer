@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -81,16 +82,16 @@ public class Stubovi extends Iron{
         a2Text.setY(size + 12);
 
         // Side text
-        Text sipkeText = new Text("sipki: " + this.sipke.getAmount() + "kom");
-        sipkeText.setFont(Font.font(14));
+        Text sipkeText = new Text("sipke: " + this.sipke.getIronType() + ", " + this.sipke.getAmount() + "kom");
+        sipkeText.setFont(Font.font(15));
         sipkeText.setX(size + 20);
         sipkeText.setY(size - 38);
-        Text uzengijeText = new Text("uzengija: " + this.uzengije.getAmount() + "kom");
-        uzengijeText.setFont(Font.font(14));
+        Text uzengijeText = new Text("uze: " + this.uzengije.getIronType() + ", " + this.uzengije.getAmount() + "kom");
+        uzengijeText.setFont(Font.font(15));
         uzengijeText.setX(size + 20);
         uzengijeText.setY(size - 22);
-        Text uzengijePerMeterText = new Text("u metar: " + this.uzengijePerMeter + "kom");
-        uzengijePerMeterText.setFont(Font.font(14));
+        Text uzengijePerMeterText = new Text(perMeterText());
+        uzengijePerMeterText.setFont(Font.font("System", FontWeight.BOLD, 15));
         uzengijePerMeterText.setX(size + 20);
         uzengijePerMeterText.setY(size - 5);
 
@@ -103,5 +104,15 @@ public class Stubovi extends Iron{
         group.setTranslateX(-size / 2 + 20);
         group.setTranslateY(-size / 2 + 25);
         return group;
+    }
+
+    private String perMeterText(){
+        return switch (this.uzengijePerMeter) {
+            case 3 -> "1/33";
+            case 4 -> "1/25";
+            case 5 -> "1/20";
+            case 6 -> "1/15";
+            default -> "u metar " + (this.uzengijePerMeter);
+        };
     }
 }

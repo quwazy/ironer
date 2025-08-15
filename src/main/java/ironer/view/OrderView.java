@@ -84,7 +84,7 @@ public class OrderView extends Stage {
 
         this.ordererLabel.setText("Narucilac:");
         this.ordererTextField.setPromptText("narucilac");
-        this.ordererTextField.setText(" ");
+        this.ordererTextField.setText("");
 
         this.dateLabel.setText("Datum:");
         this.dateTextField.setPromptText("datum");
@@ -92,7 +92,7 @@ public class OrderView extends Stage {
 
         this.noteLabel.setText("Napomena:");
         this.noteTextField.setPromptText("napomena");
-        this.noteTextField.setText(" ");
+        this.noteTextField.setText("");
 
         HBox hBox = new HBox(7);
         hBox.setAlignment(Pos.CENTER);
@@ -197,8 +197,8 @@ public class OrderView extends Stage {
         this.cleanButton.setOnAction(event -> {
             ironObservableList.clear();
             this.identifierTextField.setText("RN");
-            this.ordererTextField.setText(" ");
-            this.noteTextField.setText(" ");
+            this.ordererTextField.setText("");
+            this.noteTextField.setText("");
             updateTotal();
         });
 

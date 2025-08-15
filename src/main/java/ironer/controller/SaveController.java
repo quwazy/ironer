@@ -34,7 +34,7 @@ public class SaveController {
 
         // Determine the directory based on the operating system
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            ironerPath = "C://Users/janko/Documents/Ironer";
+            ironerPath = "C://Users/Public/Ironer";
         } else {
             ironerPath = userHome + "/Documents/Ironer";
         }

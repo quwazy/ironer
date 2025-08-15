@@ -180,8 +180,8 @@ public class SaveController {
                             // Create image from JavaFX drawing
                             StackPane pane = new StackPane(iron.getDraw());
                             pane.setBackground(new Background(new BackgroundFill(javafx.scene.paint.Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-                            Scene scene = new Scene(pane, 250, 100, javafx.scene.paint.Color.WHITE);
-                            WritableImage image = new WritableImage(250, 100);
+                            Scene scene = new Scene(pane, 250, 90, javafx.scene.paint.Color.WHITE);
+                            WritableImage image = new WritableImage(250, 90);
                             scene.snapshot(image);
 
                             // Convert WritableImage to BufferedImage
@@ -191,7 +191,7 @@ public class SaveController {
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             ImageIO.write(bufferedImage, "png", baos);
                             Image pdfImage = Image.getInstance(baos.toByteArray());
-                            pdfImage.scaleToFit(230, 60);
+                            pdfImage.scaleToFit(250, 60);
                             pdfImage.setBackgroundColor(Color.WHITE);
 
                             drawingCell.addElement(pdfImage);
@@ -211,8 +211,8 @@ public class SaveController {
             }
 
             document.add(pdfTable);
-            Paragraph blank = new Paragraph(" ");
-            document.add(blank);
+//            Paragraph blank = new Paragraph(" ");
+//            document.add(blank);
 
             //Total view
             PdfPTable pdfTotalTable = new PdfPTable(3);

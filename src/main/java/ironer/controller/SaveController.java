@@ -157,11 +157,11 @@ public class SaveController {
                     continue;
                 }
                 if ("Skica".equals(column.getText())) {
-                    columnWidths[i] = 4.0f; // Wider for the "Skica" column
-                } else if ("fi".equals(column.getText())) {
-                    columnWidths[i] = 1.0f; // Narrower for the "fi" column
+                    columnWidths[i] = 4.0f;
+                } else if ("fi".equals(column.getText()) || "#".equals(column.getText())) {
+                    columnWidths[i] = 1.0f;
                 } else {
-                    columnWidths[i] = 2.0f; // Default for other columns
+                    columnWidths[i] = 2.0f;
                 }
             }
 
@@ -169,10 +169,11 @@ public class SaveController {
             pdfTable.setWidths(columnWidths);
 
             // Add rows with data (drawings, text, etc.)
+            int row = 0;
             for (Iron iron : tableView.getItems()) {
+                row++;
                 for (TableColumn<Iron, ?> column : tableView.getColumns()) {
                     if ("Skica".equals(column.getText())) {
-                        // Add drawing for "Skica" column
                         PdfPCell drawingCell = new PdfPCell();
                         drawingCell.setBackgroundColor(Color.WHITE);
 
@@ -200,7 +201,14 @@ public class SaveController {
                             drawingCell.setPadding(5);
                         }
                         pdfTable.addCell(drawingCell);
-                    } else {
+                    }
+                    else if ("#".equals(column.getText())) {
+                        PdfPCell cell = new PdfPCell(new Phrase(String.valueOf(row)));
+                        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                        pdfTable.addCell(cell);
+                    }
+                    else {
                         Object cellValue = column.getCellData(iron);
                         PdfPCell cell = new PdfPCell(new Phrase(cellValue != null ? cellValue.toString() : ""));
                         cell.setHorizontalAlignment(Element.ALIGN_CENTER);

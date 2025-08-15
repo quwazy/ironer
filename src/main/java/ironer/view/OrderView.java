@@ -130,7 +130,23 @@ public class OrderView extends Stage {
 
     private void initTable(){
         TableColumn<Iron, Void> drawColumn = getDrawColumn();
-        TableColumn<Iron, Void> actionsCol = getRemoveIronColumn();
+        TableColumn<Iron, Void> actionsColumn = getRemoveIronColumn();
+
+        TableColumn<Iron, Number> indexColumn = new TableColumn<>("#");
+        indexColumn.setMinWidth(50);
+        indexColumn.setMaxWidth(50);
+        indexColumn.setStyle("-fx-alignment: CENTER;");
+        indexColumn.setCellFactory(col -> new TableCell<Iron, Number>() {
+            @Override
+            protected void updateItem(Number item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(String.valueOf(getIndex() + 1));
+                }
+            }
+        });
 
         TableColumn<Iron, IronType> fiColumn  = new TableColumn<>("fi");
         fiColumn.setCellValueFactory(new PropertyValueFactory<>("ironType"));
@@ -161,13 +177,16 @@ public class OrderView extends Stage {
         tableView.setMaxWidth(Double.MAX_VALUE);
         tableView.setMaxHeight(Double.MAX_VALUE);
         tableView.setStyle("-fx-font-size: 18px;");
+
         tableView.setItems(ironObservableList);
+
+        tableView.getColumns().add(indexColumn);
         tableView.getColumns().add(drawColumn);
         tableView.getColumns().add(fiColumn);
         tableView.getColumns().add(lengthColumn);
         tableView.getColumns().add(amountColumn);
         tableView.getColumns().add(weightColumn);
-        tableView.getColumns().add(actionsCol);
+        tableView.getColumns().add(actionsColumn);
 
         VBox.setVgrow(tableView, Priority.ALWAYS);
         this.mainBox.getChildren().addAll(tableView);
